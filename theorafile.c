@@ -437,7 +437,7 @@ void tf_reset(OggTheora_File *file)
 	file->eos = 0;
 }
 
-int tf_readvideo(OggTheora_File *file, char *buffer)
+int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 {
 	int i;
 	char *dst = buffer;
@@ -446,24 +446,38 @@ int tf_readvideo(OggTheora_File *file, char *buffer)
 	th_ycbcr_buffer ycbcr;
 	int rc;
 	int w, h, yoff, uvoff;
+	int retval = 0;
 
-	/* Keep trying to get a usable packet */
-	if (!INTERNAL_getNextPacket(file, &file->tstream, &packet))
+	for (i = 0; i < numframes; i += 1)
 	{
-		/* ... unless there's nothing left for us to read. */
-		return 0;
+		/* Keep trying to get a usable packet */
+		if (!INTERNAL_getNextPacket(file, &file->tstream, &packet))
+		{
+			/* ... unless there's nothing left for us to read. */
+			if (retval)
+			{
+				break;
+			}
+			return 0;
+		}
+
+		rc = th_decode_packetin(
+			file->tdec,
+			&packet,
+			&granulepos
+		);
+
+		if (rc == 0) /* New frame! */
+		{
+			retval = 1;
+		}
+		else if (rc != TH_DUPFRAME)
+		{
+			return 0; /* Why did we get here...? */
+		}
 	}
 
-	rc = th_decode_packetin(
-		file->tdec,
-		&packet,
-		&granulepos
-	);
-	if (rc == TH_DUPFRAME)
-	{
-		return 0; /* Nothing to do! */
-	}
-	else if (rc == 0) /* New frame! */
+	if (retval) /* New frame! */
 	{
 		if (th_decode_ycbcr_out(file->tdec, ycbcr) != 0)
 		{
@@ -506,9 +520,8 @@ int tf_readvideo(OggTheora_File *file, char *buffer)
 				w / 2
 			);
 		}
-		return 1;
 	}
-	return 0; /* Why did we get here...? */
+	return retval;
 }
 
 int tf_readaudio(OggTheora_File *file, float *buffer, int length)

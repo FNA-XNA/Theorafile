@@ -168,7 +168,7 @@ public static class Theorafile
 	public static extern void tf_reset(IntPtr file);
 
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
-	public static extern int tf_readvideo(IntPtr file, IntPtr buffer);
+	public static extern int tf_readvideo(IntPtr file, IntPtr buffer, int numframes);
 
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 	public static extern int tf_readaudio(IntPtr file, IntPtr buffer, int length);

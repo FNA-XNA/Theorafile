@@ -121,7 +121,7 @@ DECLSPEC int tf_eos(OggTheora_File *file);
 DECLSPEC void tf_reset(OggTheora_File *file);
 
 /* Data Reading */
-DECLSPEC int tf_readvideo(OggTheora_File *file, char *buffer);
+DECLSPEC int tf_readvideo(OggTheora_File *file, char *buffer, int numframes);
 DECLSPEC int tf_readaudio(OggTheora_File *file, float *buffer, int length);
 
 #ifdef __cplusplus

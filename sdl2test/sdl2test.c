@@ -137,7 +137,7 @@ int main(int argc, char **argv)
 	/* Get the video metadata, allocate first frame */
 	tf_videoinfo(&fileIn, &width, &height, &fps);
 	frame = (char*) SDL_malloc(width * height * 2);
-	while (!tf_readvideo(&fileIn, frame));
+	while (!tf_readvideo(&fileIn, frame, 1));
 
 	/* Create window (and audio device, if applicable) */
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -273,6 +273,11 @@ int main(int argc, char **argv)
 			{
 				run = 0;
 			}
+			else if (evt.type == SDL_KEYDOWN)
+			{
+				/* Slowdown simulator */
+				SDL_Delay(1000);
+			}
 		}
 
 		/* Loop this video! */
@@ -288,12 +293,8 @@ int main(int argc, char **argv)
 		if (thisframe > curframe)
 		{
 			/* Keep reading frames until we're caught up */
-			newframe = 0;
 			SDL_LockAudioDevice(audio);
-			do
-			{
-				newframe |= tf_readvideo(&fileIn, frame);
-			} while (++curframe < thisframe);
+			newframe = tf_readvideo(&fileIn, frame, thisframe - curframe);
 			SDL_UnlockAudioDevice(audio);
 			curframe = thisframe;
 
