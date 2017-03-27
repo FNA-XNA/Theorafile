@@ -445,7 +445,7 @@ int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 	ogg_packet packet;
 	th_ycbcr_buffer ycbcr;
 	int rc;
-	int w, h, yoff, uvoff;
+	int w, h, off;
 	int retval = 0;
 
 	for (i = 0; i < numframes; i += 1)
@@ -484,42 +484,36 @@ int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 			return 0; /* Uhh?! */
 		}
 
+		#define TF_COPY_CHANNEL(chan) \
+			for (i = 0; i < h; i += 1, dst += w) \
+			{ \
+				memcpy( \
+					dst, \
+					ycbcr[chan].data + off + ycbcr[chan].stride * i, \
+					w \
+				); \
+			}
+		/* Y */
 		w = file->tinfo.pic_width;
 		h = file->tinfo.pic_height;
-		yoff = (
+		off = (
 			(file->tinfo.pic_x & ~1) +
 			ycbcr[0].stride *
 			(file->tinfo.pic_y & ~1)
 		);
-		uvoff = (
+		TF_COPY_CHANNEL(0)
+
+		/* U/V */
+		w /= 2;
+		h /= 2;
+		off = (
 			(file->tinfo.pic_x / 2) +
 			(ycbcr[1].stride) *
 			(file->tinfo.pic_y / 2)
 		);
-		for (i = 0; i < h; i += 1, dst += w)
-		{
-			memcpy(
-				dst,
-				ycbcr[0].data + yoff + ycbcr[0].stride * i,
-				w
-			);
-		}
-		for (i = 0; i < (h / 2); i += 1, dst += w / 2)
-		{
-			memcpy(
-				dst,
-				ycbcr[1].data + uvoff + ycbcr[1].stride * i,
-				w / 2
-			);
-		}
-		for (i = 0; i < (h / 2); i += 1, dst += w / 2)
-		{
-			memcpy(
-				dst,
-				ycbcr[2].data + uvoff + ycbcr[2].stride * i,
-				w / 2
-			);
-		}
+		TF_COPY_CHANNEL(1)
+		TF_COPY_CHANNEL(2)
+		#undef TF_COPY_CHANNEL
 	}
 	return retval;
 }
