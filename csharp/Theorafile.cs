@@ -180,7 +180,7 @@ public static class Theorafile
 	/* Notice that we did not implement an OggTheora_File struct, but are
 	 * instead using a pointer natively malloc'd.
 	 *
-	 * C# Interop for Vorbisfile structs is basically impossible to do, so
+	 * C# Interop for Xiph structs is basically impossible to do, so
 	 * we just alloc what _should_ be the full size of the structure for
 	 * the OS and architecture, then pass that around as if that's a real
 	 * struct. The size is just what you get from sizeof(OggTheora_File).
@@ -195,10 +195,16 @@ public static class Theorafile
 		// Do not attempt to understand these numbers at all costs!
 		const int size32 = 1160;
 		const int size64Unix = 1472;
+		const int size64Windows = 1328;
 
 		PlatformID platform = Environment.OSVersion.Platform;
 		if (IntPtr.Size == 4)
 		{
+			/* Technically this could be a little bit smaller, but
+			 * some 32-bit architectures may be higher even on Unix
+			 * targets (like ARMv7).
+			 * -flibit
+			 */
 			return malloc((IntPtr) size32);
 		}
 		if (IntPtr.Size == 8)
@@ -206,6 +212,10 @@ public static class Theorafile
 			if (platform == PlatformID.Unix)
 			{
 				return malloc((IntPtr) size64Unix);
+			}
+			else if (platform == PlatformID.Win32NT)
+			{
+				return malloc((IntPtr) size64Windows);
 			}
 			throw new NotSupportedException("Unhandled platform!");
 		}
