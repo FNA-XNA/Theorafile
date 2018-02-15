@@ -28,7 +28,6 @@
 #include <SDL.h>
 #include <SDL_main.h>
 #include <SDL_opengl.h>
-#include <stdio.h>
 #include "theorafile.h"
 
 /* GL Function typedefs */
@@ -120,21 +119,21 @@ int main(int argc, char **argv)
 	/* We need a file name! */
 	if (argc < 2 || argc > 2)
 	{
-		printf("Need a file name!\n");
+		SDL_Log("Need a file name!\n");
 		return 1;
 	}
 
 	/* Open the Theora file */
 	if (tf_fopen(argv[1], &fileIn) < 0)
 	{
-		printf("Failed to open file.\n");
+		SDL_Log("Failed to open file.\n");
 		return 1;
 	}
 
 	/* This is a video test, people! */
 	if (!tf_hasvideo(&fileIn))
 	{
-		printf("No video!\n");
+		SDL_Log("No video!\n");
 		return 1;
 	}
 
@@ -361,6 +360,6 @@ int main(int argc, char **argv)
 	SDL_GL_DeleteContext(context);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
-	printf("Test complete.\n");
+	SDL_Log("Test complete.\n");
 	return 0;
 }
