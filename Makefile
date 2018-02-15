@@ -23,4 +23,4 @@ clean:
 	rm -f libtheorafile.$(TARGET)
 
 test:
-	$(CC) -g sdl2test/sdl2test.c theorafile.c -I. `sdl2-config --cflags --libs` $(DEPS) -Wall
+	$(CC) -g -o theorafile-test sdl2test/sdl2test.c theorafile.c -I. `sdl2-config --cflags --libs` $(DEPS) -Wall

@@ -119,19 +119,22 @@ int main(int argc, char **argv)
 	/* We need a file name! */
 	if (argc < 2 || argc > 2)
 	{
-		return 0;
+		SDL_Log("Need a file name!\n");
+		return 1;
 	}
 
 	/* Open the Theora file */
 	if (tf_fopen(argv[1], &fileIn) < 0)
 	{
-		return 0;
+		SDL_Log("Failed to open file.\n");
+		return 1;
 	}
 
 	/* This is a video test, people! */
 	if (!tf_hasvideo(&fileIn))
 	{
-		return 0;
+		SDL_Log("No video!\n");
+		return 1;
 	}
 
 	/* Get the video metadata, allocate first frame */
@@ -357,5 +360,6 @@ int main(int argc, char **argv)
 	SDL_GL_DeleteContext(context);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+	SDL_Log("Test complete.\n");
 	return 0;
 }

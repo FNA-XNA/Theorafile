@@ -15,7 +15,7 @@ Dependencies
 ------------
 Theorafile depends on libogg, libvorbis, and libtheoradec.
 
-Theorafile's "sdltest" test program requires SDL2.
+Theorafile's "sdl2test" test program requires SDL2.
 
 Building Theorafile
 -------------------
