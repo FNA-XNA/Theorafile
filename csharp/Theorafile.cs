@@ -37,6 +37,21 @@ public static class Theorafile
 
 	#endregion
 
+	#region UTF8 Marshaling
+
+	private static byte[] UTF8_ToNative(string s)
+	{
+		if (s == null)
+		{
+			return null;
+		}
+
+		// Add a null terminator. That's kind of it... :/
+		return System.Text.Encoding.UTF8.GetBytes(s + '\0');
+	}
+
+	#endregion
+
 	#region malloc/free Entry Points
 
 	// Yes, we're seriously using these. -flibit
@@ -118,17 +133,13 @@ public static class Theorafile
 
 	[DllImport(nativeLibName, EntryPoint = "tf_fopen", CallingConvention = CallingConvention.Cdecl)]
 	private static extern int INTERNAL_tf_fopen(
-		[MarshalAs(UnmanagedType.LPStr)]
-			string fname,
+		byte[] fname,
 		IntPtr file
 	);
-	public static int tf_fopen(
-		[MarshalAs(UnmanagedType.LPStr)]
-			string fname,
-		out IntPtr file
-	) {
+	public static int tf_fopen(string fname, out IntPtr file)
+	{
 		file = AllocTheoraFile();
-		return INTERNAL_tf_fopen(fname, file);
+		return INTERNAL_tf_fopen(UTF8_ToNative(fname), file);
 	}
 
 	[DllImport(nativeLibName, EntryPoint = "tf_close", CallingConvention = CallingConvention.Cdecl)]
