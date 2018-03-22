@@ -54,9 +54,10 @@ public static class Theorafile
 	// Used by ov_callbacks, seek_func
 	public enum SeekWhence : int
 	{
-		SEEK_SET = 0,
-		SEEK_CUR = 1,
-		SEEK_END = 2
+		// Add TF_ prefix to prevent C macro conflicts
+		TF_SEEK_SET = 0,
+		TF_SEEK_CUR = 1,
+		TF_SEEK_END = 2
 	}
 
 	#endregion
