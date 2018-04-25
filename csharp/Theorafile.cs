@@ -116,7 +116,7 @@ public static class Theorafile
 
 	#region Theorafile Implementation
 
-	[DllImport(nativeLibName, EntryPoint = "tf_fopen_callbacks", CallingConvention = CallingConvention.Cdecl)]
+	[DllImport(nativeLibName, EntryPoint = "tf_open_callbacks", CallingConvention = CallingConvention.Cdecl)]
 	private static extern int INTERNAL_tf_open_callbacks(
 		IntPtr datasource,
 		IntPtr file,
