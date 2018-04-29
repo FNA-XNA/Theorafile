@@ -446,6 +446,8 @@ int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 	th_ycbcr_buffer ycbcr;
 	int rc;
 	int w, h, off;
+	unsigned char *plane;
+	int stride;
 	int retval = 0;
 
 	for (i = 0; i < numframes; i += 1)
@@ -485,11 +487,13 @@ int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 		}
 
 		#define TF_COPY_CHANNEL(chan) \
+			plane = ycbcr[chan].data + off; \
+			stride = ycbcr[chan].stride; \
 			for (i = 0; i < h; i += 1, dst += w) \
 			{ \
 				memcpy( \
 					dst, \
-					ycbcr[chan].data + off + ycbcr[chan].stride * i, \
+					plane + (stride * i), \
 					w \
 				); \
 			}
