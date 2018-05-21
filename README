@@ -22,3 +22,5 @@ Building Theorafile
 For *nix platforms, just type `make` in the root directory!
 
 For Windows, see the 'visualc/' directory.
+
+For Xbox One, see the 'visualc-winrt/' directory.
