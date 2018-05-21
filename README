@@ -7,7 +7,7 @@ License
 Theorafile is released under the zlib license. See LICENSE for details.
 
 About Theorafile
------------------
+----------------
 Theorafile was written to be used for FNA's VideoPlayer. We access this library
 via Theorafile#, which you can find in the 'csharp/' directory.
 
