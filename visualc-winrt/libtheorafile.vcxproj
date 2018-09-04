@@ -11,44 +11,48 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\libogg\src\bitwise.c" />
-    <ClCompile Include="..\..\libogg\src\framing.c" />
-    <ClCompile Include="..\..\libtheora\lib\apiwrapper.c" />
-    <ClCompile Include="..\..\libtheora\lib\bitpack.c" />
-    <ClCompile Include="..\..\libtheora\lib\decapiwrapper.c" />
-    <ClCompile Include="..\..\libtheora\lib\decinfo.c" />
-    <ClCompile Include="..\..\libtheora\lib\decode.c" />
-    <ClCompile Include="..\..\libtheora\lib\dequant.c" />
-    <ClCompile Include="..\..\libtheora\lib\fragment.c" />
-    <ClCompile Include="..\..\libtheora\lib\huffdec.c" />
-    <ClCompile Include="..\..\libtheora\lib\idct.c" />
-    <ClCompile Include="..\..\libtheora\lib\tinfo.c" />
-    <ClCompile Include="..\..\libtheora\lib\internal.c" />
-    <ClCompile Include="..\..\libtheora\lib\quant.c" />
-    <ClCompile Include="..\..\libtheora\lib\state.c" />
-    <ClCompile Include="..\..\libvorbis\lib\analysis.c" />
-    <ClCompile Include="..\..\libvorbis\lib\barkmel.c" />
-    <ClCompile Include="..\..\libvorbis\lib\bitrate.c" />
-    <ClCompile Include="..\..\libvorbis\lib\block.c" />
-    <ClCompile Include="..\..\libvorbis\lib\codebook.c" />
-    <ClCompile Include="..\..\libvorbis\lib\envelope.c" />
-    <ClCompile Include="..\..\libvorbis\lib\floor0.c" />
-    <ClCompile Include="..\..\libvorbis\lib\floor1.c" />
-    <ClCompile Include="..\..\libvorbis\lib\vinfo.c" />
-    <ClCompile Include="..\..\libvorbis\lib\lookup.c" />
-    <ClCompile Include="..\..\libvorbis\lib\lpc.c" />
-    <ClCompile Include="..\..\libvorbis\lib\lsp.c" />
-    <ClCompile Include="..\..\libvorbis\lib\mapping0.c" />
-    <ClCompile Include="..\..\libvorbis\lib\mdct.c" />
-    <ClCompile Include="..\..\libvorbis\lib\psy.c" />
-    <ClCompile Include="..\..\libvorbis\lib\registry.c" />
-    <ClCompile Include="..\..\libvorbis\lib\res0.c" />
-    <ClCompile Include="..\..\libvorbis\lib\sharedbook.c" />
-    <ClCompile Include="..\..\libvorbis\lib\smallft.c" />
-    <ClCompile Include="..\..\libvorbis\lib\synthesis.c" />
-    <ClCompile Include="..\..\libvorbis\lib\vorbisenc.c" />
-    <ClCompile Include="..\..\libvorbis\lib\vorbisfile.c" />
-    <ClCompile Include="..\..\libvorbis\lib\window.c" />
+    <ClCompile Include="..\lib\ogg\bitwise.c" />
+    <ClCompile Include="..\lib\ogg\framing.c" />
+    <ClCompile Include="..\lib\theora\apiwrapper.c" />
+    <ClCompile Include="..\lib\theora\bitpack.c" />
+    <ClCompile Include="..\lib\theora\decapiwrapper.c" />
+    <ClCompile Include="..\lib\theora\decinfo.c" />
+    <ClCompile Include="..\lib\theora\decode.c" />
+    <ClCompile Include="..\lib\theora\dequant.c" />
+    <ClCompile Include="..\lib\theora\fragment.c" />
+    <ClCompile Include="..\lib\theora\huffdec.c" />
+    <ClCompile Include="..\lib\theora\idct.c" />
+    <ClCompile Include="..\lib\theora\tinfo.c" />
+    <ClCompile Include="..\lib\theora\internal.c" />
+    <ClCompile Include="..\lib\theora\quant.c" />
+    <ClCompile Include="..\lib\theora\state.c" />
+    <ClCompile Include="..\lib\theora\x86_vc\mmxfrag.c" />
+    <ClCompile Include="..\lib\theora\x86_vc\mmxidct.c" />
+    <ClCompile Include="..\lib\theora\x86_vc\mmxstate.c" />
+    <ClCompile Include="..\lib\theora\x86_vc\x86state.c" />
+    <ClCompile Include="..\lib\vorbis\analysis.c" />
+    <ClCompile Include="..\lib\vorbis\barkmel.c" />
+    <ClCompile Include="..\lib\vorbis\bitrate.c" />
+    <ClCompile Include="..\lib\vorbis\block.c" />
+    <ClCompile Include="..\lib\vorbis\codebook.c" />
+    <ClCompile Include="..\lib\vorbis\envelope.c" />
+    <ClCompile Include="..\lib\vorbis\floor0.c" />
+    <ClCompile Include="..\lib\vorbis\floor1.c" />
+    <ClCompile Include="..\lib\vorbis\vinfo.c" />
+    <ClCompile Include="..\lib\vorbis\lookup.c" />
+    <ClCompile Include="..\lib\vorbis\lpc.c" />
+    <ClCompile Include="..\lib\vorbis\lsp.c" />
+    <ClCompile Include="..\lib\vorbis\mapping0.c" />
+    <ClCompile Include="..\lib\vorbis\mdct.c" />
+    <ClCompile Include="..\lib\vorbis\psy.c" />
+    <ClCompile Include="..\lib\vorbis\registry.c" />
+    <ClCompile Include="..\lib\vorbis\res0.c" />
+    <ClCompile Include="..\lib\vorbis\sharedbook.c" />
+    <ClCompile Include="..\lib\vorbis\smallft.c" />
+    <ClCompile Include="..\lib\vorbis\synthesis.c" />
+    <ClCompile Include="..\lib\vorbis\vorbisenc.c" />
+    <ClCompile Include="..\lib\vorbis\vorbisfile.c" />
+    <ClCompile Include="..\lib\vorbis\window.c" />
     <ClCompile Include="..\theorafile.c" />
   </ItemGroup>
   <ItemGroup>
@@ -103,8 +107,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
-      <AdditionalIncludeDirectories>..\..\libogg\include;..\..\libvorbis\include;..\..\libtheora\include;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WINDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\lib;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>OC_X86_ASM;OC_X86_64_ASM;_WINDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,8 +120,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
-      <AdditionalIncludeDirectories>..\..\libogg\include;..\..\libvorbis\include;..\..\libtheora\include;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WINDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\lib;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>OC_X86_ASM;OC_X86_64_ASM;_WINDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

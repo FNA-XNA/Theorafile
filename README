@@ -4,7 +4,11 @@ Project Website: https://github.com/FNA-XNA/Theorafile
 
 License
 -------
-Theorafile is released under the zlib license. See LICENSE for details.
+Theorafile is released under the zlib license.
+
+libogg/libvorbis/libtheora are released under the BSD license.
+
+See the licenses/ folder for details.
 
 About Theorafile
 ----------------
@@ -13,7 +17,8 @@ via Theorafile#, which you can find in the 'csharp/' directory.
 
 Dependencies
 ------------
-Theorafile depends on libogg, libvorbis, and libtheoradec.
+Theorafile depends solely on the C runtime. libogg, libvorbis, and libtheoradec
+are statically linked into Theorafile.
 
 Theorafile's "sdl2test" test program requires SDL2.
 
