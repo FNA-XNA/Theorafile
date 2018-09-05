@@ -80,7 +80,7 @@ TFSRC = \
 
 # Targets
 all: clean
-	$(CC) -O3 -fpic -fPIC -shared -o libtheorafile.$(TARGET) $(TFSRC) $(INCLUDES) $(DEFINES) -lm
+	$(CC) -O3 -fpic -fPIC -shared -o libtheorafile.$(TARGET) $(TFSRC) $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
 
 clean:
 	rm -f libtheorafile.$(TARGET)
