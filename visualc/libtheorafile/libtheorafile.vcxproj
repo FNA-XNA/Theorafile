@@ -87,7 +87,6 @@
     <ClCompile Include="..\..\lib\theora\x86_vc\mmxstate.c" />
     <ClCompile Include="..\..\lib\theora\x86_vc\x86state.c" />
     <ClCompile Include="..\..\lib\vorbis\analysis.c" />
-    <ClCompile Include="..\..\lib\vorbis\barkmel.c" />
     <ClCompile Include="..\..\lib\vorbis\bitrate.c" />
     <ClCompile Include="..\..\lib\vorbis\block.c" />
     <ClCompile Include="..\..\lib\vorbis\codebook.c" />
@@ -106,8 +105,6 @@
     <ClCompile Include="..\..\lib\vorbis\sharedbook.c" />
     <ClCompile Include="..\..\lib\vorbis\smallft.c" />
     <ClCompile Include="..\..\lib\vorbis\synthesis.c" />
-    <ClCompile Include="..\..\lib\vorbis\vorbisenc.c" />
-    <ClCompile Include="..\..\lib\vorbis\vorbisfile.c" />
     <ClCompile Include="..\..\lib\vorbis\window.c" />
     <ClCompile Include="..\..\theorafile.c" />
   </ItemGroup>
