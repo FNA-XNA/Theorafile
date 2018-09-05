@@ -26,10 +26,6 @@
     <ClCompile Include="..\lib\theora\internal.c" />
     <ClCompile Include="..\lib\theora\quant.c" />
     <ClCompile Include="..\lib\theora\state.c" />
-    <ClCompile Include="..\lib\theora\x86_vc\mmxfrag.c" />
-    <ClCompile Include="..\lib\theora\x86_vc\mmxidct.c" />
-    <ClCompile Include="..\lib\theora\x86_vc\mmxstate.c" />
-    <ClCompile Include="..\lib\theora\x86_vc\x86state.c" />
     <ClCompile Include="..\lib\vorbis\analysis.c" />
     <ClCompile Include="..\lib\vorbis\bitrate.c" />
     <ClCompile Include="..\lib\vorbis\block.c" />
@@ -105,7 +101,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <AdditionalIncludeDirectories>..\lib;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>OC_X86_ASM;OC_X86_64_ASM;_WINDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,7 +114,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <AdditionalIncludeDirectories>..\lib;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>OC_X86_ASM;OC_X86_64_ASM;_WINDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
