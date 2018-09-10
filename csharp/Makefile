@@ -3,7 +3,6 @@
 
 build: clean
 	mkdir bin
-	cp Theorafile-CS.dll.config bin
 	dmcs /unsafe -debug -out:bin/Theorafile-CS.dll -target:library Theorafile.cs
 
 clean:

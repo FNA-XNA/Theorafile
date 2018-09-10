@@ -36,9 +36,4 @@
   <ItemGroup>
     <Compile Include="Theorafile.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Theorafile-CS.dll.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>
