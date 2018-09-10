@@ -3,7 +3,7 @@
 
 build: clean
 	mkdir bin
-	dmcs /unsafe -debug -out:bin/Theorafile-CS.dll -target:library Theorafile.cs
+	mcs /unsafe -debug -out:bin/Theorafile-CS.dll -target:library Theorafile.cs
 
 clean:
 	rm -rf bin
