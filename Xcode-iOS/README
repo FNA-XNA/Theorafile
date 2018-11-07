@@ -5,4 +5,4 @@ Theorafile uses Xcode to build on iOS and tvOS.
 Compiling
 ---------
 1. Build theorafile.xcodeproj
-2. Grab the output theorafile.a, ship it!
+2. Grab the output libtheorafile.a, ship it!
