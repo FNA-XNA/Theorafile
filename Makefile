@@ -32,8 +32,12 @@ else # Assuming x86...
 	DEFINES += -DOC_X86_ASM
 endif
 
+SRCDIR = $(dir $(MAKEFILE_LIST))
+
+vpath %.c $(SRCDIR)
+
 # Includes
-INCLUDES = -I. -Ilib -Ilib/ogg -Ilib/vorbis -Ilib/theora
+INCLUDES = -I$(SRCDIR) -I$(SRCDIR)/lib -I$(SRCDIR)/lib/ogg -I$(SRCDIR)/lib/vorbis -I$(SRCDIR)/lib/theora
 
 # Source
 TFSRC = \
@@ -79,8 +83,8 @@ TFSRC = \
 	lib/theora/x86/x86state.c
 
 # Targets
-all: clean
-	$(CC) -O3 -fpic -fPIC -shared -o libtheorafile.$(TARGET) $(TFSRC) $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
+all: $(TFSRC)
+	$(CC) -O3 -fpic -fPIC -shared -o libtheorafile.$(TARGET) $^ $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
 
 clean:
 	rm -f libtheorafile.$(TARGET)
