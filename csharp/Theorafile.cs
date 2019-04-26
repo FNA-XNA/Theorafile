@@ -52,18 +52,6 @@ public static class Theorafile
 
 	#endregion
 
-	#region malloc/free Entry Points
-
-	// Yes, we're seriously using these. -flibit
-
-	[DllImport("msvcrt", CallingConvention = CallingConvention.Cdecl)]
-	private static extern IntPtr malloc(IntPtr size);
-
-	[DllImport("msvcrt", CallingConvention = CallingConvention.Cdecl)]
-	private static extern void free(IntPtr memblock);
-
-	#endregion
-
 	#region C stdio Macros
 
 	// Used by ov_callbacks, seek_func
@@ -147,7 +135,7 @@ public static class Theorafile
 	public static int tf_close(ref IntPtr file)
 	{
 		int result = INTERNAL_tf_close(file);
-		free(file);
+		Marshal.FreeHGlobal(file);
 		file = IntPtr.Zero;
 		return result;
 	}
@@ -217,17 +205,17 @@ public static class Theorafile
 			 * targets (like ARMv7).
 			 * -flibit
 			 */
-			return malloc((IntPtr) size32);
+			return Marshal.AllocHGlobal(size32);
 		}
 		if (IntPtr.Size == 8)
 		{
 			if (platform == PlatformID.Unix)
 			{
-				return malloc((IntPtr) size64Unix);
+				return Marshal.AllocHGlobal(size64Unix);
 			}
 			else if (platform == PlatformID.Win32NT)
 			{
-				return malloc((IntPtr) size64Windows);
+				return Marshal.AllocHGlobal(size64Windows);
 			}
 			throw new NotSupportedException("Unhandled platform!");
 		}
