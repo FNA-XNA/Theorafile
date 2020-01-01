@@ -1,6 +1,6 @@
 /* Theorafile - Ogg Theora Video Decoder Library
  *
- * Copyright (c) 2017 Ethan Lee.
+ * Copyright (c) 2017-2020 Ethan Lee.
  * Based on TheoraPlay, Copyright (c) 2011-2016 Ryan C. Gordon.
  *
  * This software is provided 'as-is', without any express or implied warranty.
