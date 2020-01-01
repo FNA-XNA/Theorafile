@@ -25,6 +25,8 @@ else
 	TARGET = so
 endif
 
+CFLAGS += -O3
+
 # CPU Arch Flags
 ifeq ($(ARCH), x86_64)
 	DEFINES += -DOC_X86_ASM -DOC_X86_64_ASM
@@ -84,7 +86,7 @@ TFSRC = \
 
 # Targets
 all: $(TFSRC)
-	$(CC) -O3 -fpic -fPIC -shared -o libtheorafile.$(TARGET) $^ $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
+	$(CC) $(CFLAGS) -fpic -fPIC -shared -o libtheorafile.$(TARGET) $^ $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
 
 clean:
 	rm -f libtheorafile.$(TARGET)
