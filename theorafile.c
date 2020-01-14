@@ -522,14 +522,14 @@ int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 	return retval;
 }
 
-int tf_readaudio(OggTheora_File *file, float *buffer, int length)
+int tf_readaudio(OggTheora_File *file, float *buffer, int samples)
 {
 	int offset = 0;
 	int chan, frame;
 	ogg_packet packet;
 	float **pcm = NULL;
 
-	while (offset < length)
+	while (offset < samples)
 	{
 		const int frames = vorbis_synthesis_pcmout(&file->vdsp, &pcm);
 		if (frames > 0)
@@ -539,7 +539,7 @@ int tf_readaudio(OggTheora_File *file, float *buffer, int length)
 			for (chan = 0; chan < file->vinfo.channels; chan += 1)
 			{
 				buffer[offset++] = pcm[chan][frame];
-				if (offset >= length)
+				if (offset >= samples)
 				{
 					vorbis_synthesis_read(
 						&file->vdsp,

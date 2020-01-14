@@ -120,9 +120,15 @@ DECLSPEC void tf_audioinfo(
 DECLSPEC int tf_eos(OggTheora_File *file);
 DECLSPEC void tf_reset(OggTheora_File *file);
 
-/* Data Reading */
+/* Data Reading
+ *
+ * Note that these functions are NOT thread-safe! You should put a mutex around
+ * these two calls if they are being called from separate threads.
+ *
+ * Also, `samples` is not measured in frames!
+ */
 DECLSPEC int tf_readvideo(OggTheora_File *file, char *buffer, int numframes);
-DECLSPEC int tf_readaudio(OggTheora_File *file, float *buffer, int length);
+DECLSPEC int tf_readaudio(OggTheora_File *file, float *buffer, int samples);
 
 #ifdef __cplusplus
 }
