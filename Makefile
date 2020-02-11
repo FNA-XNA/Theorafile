@@ -21,8 +21,10 @@ ifeq ($(WINDOWS_TARGET),1)
 else ifeq ($(UNAME), Darwin)
 	CC += -mmacosx-version-min=10.6
 	TARGET = dylib
+	CFLAGS += -fpic -fPIC
 else
 	TARGET = so
+	CFLAGS += -fpic -fPIC
 endif
 
 CFLAGS += -O3
@@ -86,7 +88,7 @@ TFSRC = \
 
 # Targets
 all: $(TFSRC)
-	$(CC) $(CFLAGS) -fpic -fPIC -shared -o libtheorafile.$(TARGET) $^ $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
+	$(CC) $(CFLAGS) -shared -o libtheorafile.$(TARGET) $^ $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
 
 clean:
 	rm -f libtheorafile.$(TARGET)
