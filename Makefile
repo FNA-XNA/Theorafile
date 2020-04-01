@@ -19,9 +19,10 @@ ifeq ($(WINDOWS_TARGET),1)
 	TARGET = dll
 	LDFLAGS += -static-libgcc
 else ifeq ($(UNAME), Darwin)
-	CC += -mmacosx-version-min=10.6
+	CC += -mmacosx-version-min=10.9
 	TARGET = dylib
 	CFLAGS += -fpic -fPIC
+	LDFLAGS += -rpath @rpath/libtheorafile.dylib
 else
 	TARGET = so
 	CFLAGS += -fpic -fPIC
