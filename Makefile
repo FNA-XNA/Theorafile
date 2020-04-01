@@ -22,7 +22,7 @@ else ifeq ($(UNAME), Darwin)
 	CC += -mmacosx-version-min=10.9
 	TARGET = dylib
 	CFLAGS += -fpic -fPIC
-	LDFLAGS += -rpath @rpath/libtheorafile.dylib
+	LDFLAGS += -install_name @rpath/libtheorafile.dylib
 else
 	TARGET = so
 	CFLAGS += -fpic -fPIC
