@@ -90,6 +90,19 @@ public static class Theorafile
 
 	#endregion
 
+	#region libtheora Enumerations
+
+	public enum th_pixel_fmt
+	{
+		TH_PF_420,
+		TH_PF_RSVD,
+		TH_PF_422,
+		TH_PF_444,
+		TH_PF_NFORMATS
+	}
+
+	#endregion
+
 	#region Theorafile Structures
 
 	[StructLayout(LayoutKind.Sequential)]
@@ -151,7 +164,8 @@ public static class Theorafile
 		IntPtr file,
 		out int width,
 		out int height,
-		out double fps
+		out double fps,
+		out th_pixel_fmt fmt
 	);
 
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
