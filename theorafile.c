@@ -249,8 +249,9 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 			goto fail;
 		}
 
-		/* FIXME: We only support YUV420 :shrug: */
-		if (file->tinfo.pixel_fmt != TH_PF_420)
+		if (	file->tinfo.pixel_fmt != TH_PF_420 &&
+			file->tinfo.pixel_fmt != TH_PF_422 &&
+			file->tinfo.pixel_fmt != TH_PF_444	)
 		{
 			errcode = TF_EUNSUPPORTED;
 			goto fail;
@@ -508,13 +509,27 @@ int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 		TF_COPY_CHANNEL(0)
 
 		/* U/V */
-		w /= 2;
-		h /= 2;
-		off = (
-			(file->tinfo.pic_x / 2) +
-			(ycbcr[1].stride) *
-			(file->tinfo.pic_y / 2)
-		);
+		if (file->tinfo.pixel_fmt == TH_PF_420)
+		{
+			/* Subsampled in both dimensions */
+			w /= 2;
+			h /= 2;
+			off = (
+				(file->tinfo.pic_x / 2) +
+				(ycbcr[1].stride) *
+				(file->tinfo.pic_y / 2)
+			);
+		}
+		else if (file->tinfo.pixel_fmt == TH_PF_422)
+		{
+			/* Subsampled only horizontally */
+			w /= 2;
+			off = (
+				(file->tinfo.pic_x / 2) +
+				(ycbcr[1].stride) *
+				(file->tinfo.pic_y & ~1)
+			);
+		}
 		TF_COPY_CHANNEL(1)
 		TF_COPY_CHANNEL(2)
 		#undef TF_COPY_CHANNEL

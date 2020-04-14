@@ -96,7 +96,8 @@ int main(int argc, char **argv)
 
 	/* Theorafile variables */
 	OggTheora_File fileIn;
-	int width, height, channels, samplerate;
+	int width, height, uvWidth, uvHeight;
+	int channels, samplerate;
 	double fps;
 	int curframe = 0, thisframe, newframe;
 	char *frame = NULL;
@@ -140,6 +141,24 @@ int main(int argc, char **argv)
 	/* Get the video metadata, allocate first frame */
 	tf_videoinfo(&fileIn, &width, &height, &fps);
 	frame = (char*) SDL_malloc(width * height * 2);
+	if (fileIn.tinfo.pixel_fmt == TH_PF_420)
+	{
+		/* Subsampled in both dimensions */
+		uvWidth = width / 2;
+		uvHeight = height / 2;
+	}
+	else if (fileIn.tinfo.pixel_fmt == TH_PF_422)
+	{
+		/* Subsampled only horizontally */
+		uvWidth = width / 2;
+		uvHeight = height;
+	}
+	else
+	{
+		/* No subsampling at all... */
+		uvWidth = width;
+		uvHeight = height;
+	}
 	while (!tf_readvideo(&fileIn, frame, 1));
 
 	/* Create window (and audio device, if applicable) */
@@ -222,15 +241,15 @@ int main(int argc, char **argv)
 	)
 	GEN_TEXTURE(
 		1,
-		width / 2,
-		height / 2,
+		uvWidth,
+		uvHeight,
 		frame + (width * height)
 	)
 	GEN_TEXTURE(
 		2,
-		width / 2,
-		height / 2,
-		frame + (width * height) + (width / 2 * height / 2)
+		uvWidth,
+		uvHeight,
+		frame + (width * height) + (uvWidth * uvHeight)
 	)
 	#undef GEN_TEXTURE
 
@@ -322,8 +341,8 @@ int main(int argc, char **argv)
 					0,
 					0,
 					0,
-					width / 2,
-					height / 2,
+					uvWidth,
+					uvHeight,
 					GL_LUMINANCE,
 					GL_UNSIGNED_BYTE,
 					frame + (width * height)
@@ -334,11 +353,11 @@ int main(int argc, char **argv)
 					0,
 					0,
 					0,
-					width / 2,
-					height / 2,
+					uvWidth,
+					uvHeight,
 					GL_LUMINANCE,
 					GL_UNSIGNED_BYTE,
-					frame + (width * height) + (width / 2 * height / 2)
+					frame + (width * height) + (uvWidth * uvHeight)
 				);
 			}
 		}
