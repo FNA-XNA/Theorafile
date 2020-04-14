@@ -108,7 +108,8 @@ DECLSPEC void tf_videoinfo(
 	OggTheora_File *file,
 	int *width,
 	int *height,
-	double *fps
+	double *fps,
+	th_pixel_fmt *fmt
 );
 DECLSPEC void tf_audioinfo(
 	OggTheora_File *file,

@@ -380,8 +380,13 @@ int tf_hasaudio(OggTheora_File *file)
 	return file->vpackets != 0;
 }
 
-void tf_videoinfo(OggTheora_File *file, int *width, int *height, double *fps)
-{
+void tf_videoinfo(
+	OggTheora_File *file,
+	int *width,
+	int *height,
+	double *fps,
+	th_pixel_fmt *fmt
+) {
 	if (width != NULL)
 	{
 		*width = file->tinfo.pic_width;
@@ -403,6 +408,10 @@ void tf_videoinfo(OggTheora_File *file, int *width, int *height, double *fps)
 		{
 			*fps = 0.0;
 		}
+	}
+	if (fmt != NULL)
+	{
+		*fmt = file->tinfo.pixel_fmt;
 	}
 }
 

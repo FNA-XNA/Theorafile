@@ -99,6 +99,7 @@ int main(int argc, char **argv)
 	int width, height, uvWidth, uvHeight;
 	int channels, samplerate;
 	double fps;
+	th_pixel_fmt fmt;
 	int curframe = 0, thisframe, newframe;
 	char *frame = NULL;
 
@@ -139,15 +140,15 @@ int main(int argc, char **argv)
 	}
 
 	/* Get the video metadata, allocate first frame */
-	tf_videoinfo(&fileIn, &width, &height, &fps);
+	tf_videoinfo(&fileIn, &width, &height, &fps, &fmt);
 	frame = (char*) SDL_malloc(width * height * 2);
-	if (fileIn.tinfo.pixel_fmt == TH_PF_420)
+	if (fmt == TH_PF_420)
 	{
 		/* Subsampled in both dimensions */
 		uvWidth = width / 2;
 		uvHeight = height / 2;
 	}
-	else if (fileIn.tinfo.pixel_fmt == TH_PF_422)
+	else if (fmt == TH_PF_422)
 	{
 		/* Subsampled only horizontally */
 		uvWidth = width / 2;
