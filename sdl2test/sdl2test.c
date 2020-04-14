@@ -50,16 +50,20 @@ static const GLchar *GLVert =
 		"gl_TexCoord[0].xy = tex;\n"
 	"}\n";
 
-/* This shader was originally from SDL 1.3 */
+/* This shader was originally from SDL 1.3!
+ * It has been modified to use color conversion for HD formats:
+ * http://www.equasys.de/colorconversion.html
+ * http://www.equasys.de/colorformat.html
+ */
 static const GLchar *GLFrag =
 	"#version 110\n"
 	"uniform sampler2D samp0;\n"
 	"uniform sampler2D samp1;\n"
 	"uniform sampler2D samp2;\n"
 	"const vec3 offset = vec3(-0.0625, -0.5, -0.5);\n"
-	"const vec3 Rcoeff = vec3(1.164,  0.000,  1.596);\n"
-	"const vec3 Gcoeff = vec3(1.164, -0.391, -0.813);\n"
-	"const vec3 Bcoeff = vec3(1.164,  2.018,  0.000);\n"
+	"const vec3 Rcoeff = vec3(1.164,  0.000,  1.793);\n"
+	"const vec3 Gcoeff = vec3(1.164, -0.213, -0.533);\n"
+	"const vec3 Bcoeff = vec3(1.164,  2.112,  0.000);\n"
 	"void main() {\n"
 	"	vec2 tcoord;\n"
 	"	vec3 yuv, rgb;\n"
