@@ -96,6 +96,7 @@ int main(int argc, char **argv)
 	SDL_AudioDeviceID audio;
 	SDL_AudioSpec spec;
 	SDL_Event evt;
+	Uint64 timeStart, timeCurrent;
 	Uint8 run = 1;
 
 	/* Theorafile variables */
@@ -292,6 +293,7 @@ int main(int argc, char **argv)
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 
+	timeStart = SDL_GetPerformanceCounter();
 	while (run)
 	{
 		while (SDL_PollEvent(&evt))
@@ -316,7 +318,12 @@ int main(int argc, char **argv)
 		SDL_UnlockAudioDevice(audio);
 
 		/* Based on when we started, what frame should we be on? */
-		thisframe = (int) (SDL_GetTicks() / (1000.0 / fps));
+		timeCurrent = SDL_GetPerformanceCounter();
+		thisframe = (int) (
+			(double) (timeCurrent - timeStart) /
+			(double) SDL_GetPerformanceFrequency() *
+			fps
+		);
 		if (thisframe > curframe)
 		{
 			/* Keep reading frames until we're caught up */
