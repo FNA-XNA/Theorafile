@@ -261,12 +261,11 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 		file->tdec = th_decode_alloc(&file->tinfo, tsetup);
 		TF_OPEN_ASSERT(!file->tdec)
 
-		/* Set decoder to maximum post-processing level.
-		 *  Theoretically we could try dropping this level if we're
-		 *  not keeping up.
-		 *
+		/* Disable all post-processing in the decoder.
 		 * FIXME: Maybe an API to set this?
 		 * FIXME: Could be TH_DECCTL_GET_PPLEVEL_MAX, for example!
+		 * FIXME: Theoretically we could enable post-processing and then
+		 * FIXME: drop the quality level if we're not keeping up.
 		 */
 		th_decode_ctl(
 			file->tdec,
