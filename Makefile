@@ -5,20 +5,27 @@
 UNAME = $(shell uname)
 ARCH = $(shell uname -m)
 
-# Detect Windows target
+# Detect cross targets
 WINDOWS_TARGET=0
+APPLE_TARGET=0
 ifeq ($(OS), Windows_NT) # cygwin/msys2
 	WINDOWS_TARGET=1
 endif
 ifneq (,$(findstring w64-mingw32,$(CC))) # mingw-w64 on Linux
 	WINDOWS_TARGET=1
 endif
+ifeq ($(UNAME), Darwin)
+	APPLE_TARGET=1
+endif
+ifneq (,$(findstring apple-darwin,$(CC))) # osxcross on Linux
+	APPLE_TARGET=1
+endif
 
 # Compiler
 ifeq ($(WINDOWS_TARGET),1)
 	TARGET = dll
 	LDFLAGS += -static-libgcc
-else ifeq ($(UNAME), Darwin)
+else ifeq ($(APPLE_TARGET),1)
 	CC += -mmacosx-version-min=10.9
 	TARGET = dylib
 	CFLAGS += -fpic -fPIC
