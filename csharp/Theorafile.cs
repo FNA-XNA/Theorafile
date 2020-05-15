@@ -27,6 +27,7 @@
 #region Using Statements
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 #endregion
 
 public static class Theorafile
@@ -39,15 +40,18 @@ public static class Theorafile
 
 	#region UTF8 Marshaling
 
-	private static byte[] UTF8_ToNative(string s)
+	/* Used for heap allocated string marshaling
+	 * Returned byte* must be free'd with FreeHGlobal.
+	 */
+	private static unsafe byte* Utf8Encode(string str)
 	{
-		if (s == null)
+		int bufferSize = (str.Length * 4) + 1;
+		byte* buffer = (byte*)Marshal.AllocHGlobal(bufferSize);
+		fixed (char* strPtr = str)
 		{
-			return null;
+			Encoding.UTF8.GetBytes(strPtr, str.Length + 1, buffer, bufferSize);
 		}
-
-		// Add a null terminator. That's kind of it... :/
-		return System.Text.Encoding.UTF8.GetBytes(s + '\0');
+		return buffer;
 	}
 
 	#endregion
@@ -133,14 +137,18 @@ public static class Theorafile
 	}
 
 	[DllImport(nativeLibName, EntryPoint = "tf_fopen", CallingConvention = CallingConvention.Cdecl)]
-	private static extern int INTERNAL_tf_fopen(
-		byte[] fname,
+	private static extern unsafe int INTERNAL_tf_fopen(
+		byte* fname,
 		IntPtr file
 	);
-	public static int tf_fopen(string fname, out IntPtr file)
+	public static unsafe int tf_fopen(string fname, out IntPtr file)
 	{
 		file = AllocTheoraFile();
-		return INTERNAL_tf_fopen(UTF8_ToNative(fname), file);
+
+		byte* utf8Fname = Utf8Encode(fname);
+		int result = INTERNAL_tf_fopen(utf8Fname, file);
+		Marshal.FreeHGlobal((IntPtr)utf8Fname);
+		return result;
 	}
 
 	[DllImport(nativeLibName, EntryPoint = "tf_close", CallingConvention = CallingConvention.Cdecl)]
