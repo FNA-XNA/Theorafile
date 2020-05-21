@@ -46,10 +46,15 @@ public static class Theorafile
 	private static unsafe byte* Utf8Encode(string str)
 	{
 		int bufferSize = (str.Length * 4) + 1;
-		byte* buffer = (byte*)Marshal.AllocHGlobal(bufferSize);
+		byte* buffer = (byte*) Marshal.AllocHGlobal(bufferSize);
 		fixed (char* strPtr = str)
 		{
-			Encoding.UTF8.GetBytes(strPtr, str.Length + 1, buffer, bufferSize);
+			Encoding.UTF8.GetBytes(
+				strPtr,
+				str.Length + 1,
+				buffer,
+				bufferSize
+			);
 		}
 		return buffer;
 	}
@@ -147,7 +152,7 @@ public static class Theorafile
 
 		byte* utf8Fname = Utf8Encode(fname);
 		int result = INTERNAL_tf_fopen(utf8Fname, file);
-		Marshal.FreeHGlobal((IntPtr)utf8Fname);
+		Marshal.FreeHGlobal((IntPtr) utf8Fname);
 		return result;
 	}
 
