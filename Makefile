@@ -40,7 +40,7 @@ CFLAGS += -O3
 # CPU Arch Flags
 ifeq ($(ARCH), x86_64)
 	DEFINES += -DOC_X86_ASM -DOC_X86_64_ASM
-else # Assuming x86...
+else ifeq ($(ARCH), i686)
 	DEFINES += -DOC_X86_ASM
 endif
 
