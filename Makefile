@@ -1,24 +1,24 @@
 # Makefile for Theorafile
 # Written by Ethan "flibitijibibo" Lee
 
-# System information
-UNAME = $(shell uname)
-ARCH = $(shell uname -m)
-
 # Detect cross targets
+TRIPLET=$(shell $(CC) -dumpmachine)
 WINDOWS_TARGET=0
 APPLE_TARGET=0
 ifeq ($(OS), Windows_NT) # cygwin/msys2
 	WINDOWS_TARGET=1
 endif
-ifneq (,$(findstring w64-mingw32,$(CC))) # mingw-w64 on Linux
+ifneq (,$(findstring w64-mingw32,$(TRIPLET)))
 	WINDOWS_TARGET=1
 endif
-ifeq ($(UNAME), Darwin)
+ifneq (,$(findstring apple-darwin,$(TRIPLET)))
 	APPLE_TARGET=1
 endif
-ifneq (,$(findstring apple-darwin,$(CC))) # osxcross on Linux
-	APPLE_TARGET=1
+ifneq (,$(findstring x86_64,$(TRIPLET)))
+	DEFINES += -DOC_X86_ASM -DOC_X86_64_ASM
+endif
+ifneq (,$(findstring i686,$(TRIPLET)))
+	DEFINES += -DOC_X86_ASM
 endif
 
 # Compiler
@@ -36,13 +36,6 @@ else
 endif
 
 CFLAGS += -O3
-
-# CPU Arch Flags
-ifeq ($(ARCH), x86_64)
-	DEFINES += -DOC_X86_ASM -DOC_X86_64_ASM
-else ifeq ($(ARCH), i686)
-	DEFINES += -DOC_X86_ASM
-endif
 
 SRCDIR = $(dir $(MAKEFILE_LIST))
 
