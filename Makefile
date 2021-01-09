@@ -11,6 +11,9 @@ endif
 ifneq (,$(findstring w64-mingw32,$(TRIPLET)))
 	WINDOWS_TARGET=1
 endif
+ifneq (,$(findstring w64-windows,$(TRIPLET)))
+	WINDOWS_TARGET=1
+endif
 ifneq (,$(findstring apple-darwin,$(TRIPLET)))
 	APPLE_TARGET=1
 endif
