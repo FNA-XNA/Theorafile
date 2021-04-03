@@ -64,13 +64,17 @@ typedef struct OggTheora_File
 	int tpackets;
 	int vpackets;
 	ogg_stream_state tstream;
-	ogg_stream_state vstream;
+	ogg_stream_state *vstream;
 
 	/* Metadata */
 	th_info tinfo;
-	vorbis_info vinfo;
+	vorbis_info *vinfo;
 	th_comment tcomment;
-	vorbis_comment vcomment;
+	vorbis_comment *vcomment;
+
+	/* Track data */
+	int vtracks;
+	int vtrack;
 
 	/* Theora Data */
 	th_dec_ctx *tdec;
@@ -116,6 +120,7 @@ DECLSPEC void tf_audioinfo(
 	int *channels,
 	int *samplerate
 );
+DECLSPEC int tf_setaudiotrack(OggTheora_File *file, int vtrack);
 
 /* Stream State */
 DECLSPEC int tf_eos(OggTheora_File *file);
