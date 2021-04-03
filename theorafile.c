@@ -113,6 +113,8 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 	th_setup_info *tsetup = NULL;
 	int pp_level_max = 0;
 	int errcode = TF_EUNKNOWN;
+	vorbis_info vinfo;
+	vorbis_comment vcomment;
 
 	if (datasource == NULL)
 	{
@@ -128,6 +130,8 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 
 
 	ogg_sync_init(&file->sync);
+	vorbis_info_init(&vinfo);
+	vorbis_comment_init(&vcomment);
 	th_info_init(&file->tinfo);
 	th_comment_init(&file->tcomment);
 
@@ -135,11 +139,6 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 	TF_OPEN_ASSERT(INTERNAL_readOggData(file) <= 0)
 
 	/* Read header */
-	vorbis_info vinfo;
-	vorbis_comment vcomment;
-	vorbis_info_init(&vinfo);
-	vorbis_comment_init(&vcomment);
-
 	while (ogg_sync_pageout(&file->sync, &file->page) > 0)
 	{
 		if (!ogg_page_bos(&file->page))
@@ -176,6 +175,7 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 			file->vtracks += 1;
 			file->vpackets += 1;
 
+			/* Reset this for other possible Vorbis streams */
 			vorbis_info_init(&vinfo);
 			vorbis_comment_init(&vcomment);
 		}
@@ -194,7 +194,7 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 
 	/* Apparently there are 2 more theora and 2 more vorbis headers next. */
 	#define TPACKETS (file->tpackets && (file->tpackets < 3))
-	#define VPACKETS (file->vpackets && (file->vpackets < file->vtracks + 2))
+	#define VPACKETS (file->vpackets && (file->vpackets < (file->vtracks + 2)))
 	while (TPACKETS || VPACKETS)
 	{
 		while (TPACKETS)
@@ -343,6 +343,8 @@ int tf_fopen(const char *fname, OggTheora_File *file)
 
 void tf_close(OggTheora_File *file)
 {
+	int i;
+
 	/* Theora Data */
 	if (file->tdec != NULL)
 	{
@@ -372,7 +374,7 @@ void tf_close(OggTheora_File *file)
 	/* Metadata */
 	th_info_clear(&file->tinfo);
 	th_comment_clear(&file->tcomment);
-	for (int i = 0; i < file->vtracks; i++)
+	for (i = 0; i < file->vtracks; i += 1)
 	{
 		vorbis_comment_clear(&file->vcomment[i]);
 		vorbis_info_clear(&file->vinfo[i]);
@@ -450,7 +452,7 @@ void tf_audioinfo(OggTheora_File *file, int *channels, int *samplerate)
 
 int tf_setaudiotrack(OggTheora_File *file, int vtrack)
 {
-	// TODO: Flush buffer immediately if playing?
+	/* Note there may be a slight delay changing track midstream. */
 	if (vtrack >= 0 && vtrack < file->vtracks)
 	{
 		file->vtrack = vtrack;
