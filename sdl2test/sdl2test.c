@@ -304,8 +304,21 @@ int main(int argc, char **argv)
 			}
 			else if (evt.type == SDL_KEYDOWN)
 			{
-				/* Slowdown simulator */
-				SDL_Delay(1000);
+				if (evt.key.keysym.sym == SDLK_SPACE)
+				{
+					/* Slowdown simulator */
+					SDL_Delay(1000);
+				}
+				else if (	evt.key.keysym.sym >= SDLK_1 &&
+						evt.key.keysym.sym <= SDLK_9	)
+				{
+					SDL_LockAudioDevice(audio);
+					tf_setaudiotrack(
+						&fileIn,
+						evt.key.keysym.sym - SDLK_1
+					);
+					SDL_UnlockAudioDevice(audio);
+				}
 			}
 		}
 
