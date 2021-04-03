@@ -120,7 +120,6 @@ DECLSPEC void tf_audioinfo(
 	int *channels,
 	int *samplerate
 );
-DECLSPEC int tf_setaudiotrack(OggTheora_File *file, int vtrack);
 
 /* Stream State */
 DECLSPEC int tf_eos(OggTheora_File *file);
@@ -135,6 +134,18 @@ DECLSPEC void tf_reset(OggTheora_File *file);
  */
 DECLSPEC int tf_readvideo(OggTheora_File *file, char *buffer, int numframes);
 DECLSPEC int tf_readaudio(OggTheora_File *file, float *buffer, int samples);
+
+/* Support for multiple audio tracks in a single file
+ *
+ * Note that this function is NOT thread-safe! You should put a mutex around it
+ * if the file is being accessed from separate threads.
+ *
+ * Also note that when called mid-stream, switching to the new track may take
+ * some time whie it finishes reading the current packet. When starting the
+ * decode, setting this _before_ reading should ensure that the track is fully
+ * clean without any artifacts from transitioning between tracks.
+ */
+DECLSPEC int tf_setaudiotrack(OggTheora_File *file, int vtrack);
 
 #ifdef __cplusplus
 }
