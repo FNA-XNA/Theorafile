@@ -28,6 +28,7 @@
 #include "theorafile.h"
 
 #include <stdio.h> /* fopen and friends */
+#include <stdlib.h> /* realloc */
 #include <string.h> /* memcpy, memset */
 
 #define TF_DEFAULT_BUFFER_SIZE 4096
@@ -63,7 +64,7 @@ static inline void INTERNAL_queueOggPage(OggTheora_File *file)
 	}
 	if (file->vpackets)
 	{
-		ogg_stream_pagein(&file->vstream, &file->page);
+		ogg_stream_pagein(&file->vstream[file->vtrack], &file->page);
 	}
 }
 
@@ -127,8 +128,6 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 
 
 	ogg_sync_init(&file->sync);
-	vorbis_info_init(&file->vinfo);
-	vorbis_comment_init(&file->vcomment);
 	th_info_init(&file->tinfo);
 	th_comment_init(&file->tcomment);
 
@@ -136,6 +135,11 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 	TF_OPEN_ASSERT(INTERNAL_readOggData(file) <= 0)
 
 	/* Read header */
+	vorbis_info vinfo;
+	vorbis_comment vcomment;
+	vorbis_info_init(&vinfo);
+	vorbis_comment_init(&vcomment);
+
 	while (ogg_sync_pageout(&file->sync, &file->page) > 0)
 	{
 		if (!ogg_page_bos(&file->page))
@@ -158,13 +162,22 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 			memcpy(&file->tstream, &filler, sizeof(filler));
 			file->tpackets = 1;
 		}
-		else if (!file->vpackets && (vorbis_synthesis_headerin(
-			&file->vinfo,
-			&file->vcomment,
+		else if (vorbis_synthesis_headerin(
+			&vinfo,
+			&vcomment,
 			&packet
-		) >= 0)) {
-			memcpy(&file->vstream, &filler, sizeof(filler));
-			file->vpackets = 1;
+		) >= 0) {
+			file->vinfo = realloc(file->vinfo, (file->vtracks + 1) * sizeof(file->vinfo[0]));
+			file->vcomment = realloc(file->vcomment, (file->vtracks + 1) * sizeof(file->vcomment[0]));
+			file->vstream = realloc(file->vstream, (file->vtracks + 1) * sizeof(file->vstream[0]));
+			file->vinfo[file->vtracks] = vinfo;
+			file->vcomment[file->vtracks] = vcomment;
+			memcpy(&file->vstream[file->vtracks], &filler, sizeof(filler));
+			file->vtracks += 1;
+			file->vpackets += 1;
+
+			vorbis_info_init(&vinfo);
+			vorbis_comment_init(&vcomment);
 		}
 		else
 		{
@@ -173,12 +186,15 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 		}
 	}
 
+	vorbis_comment_clear(&vcomment);
+	vorbis_info_clear(&vinfo);
+
 	/* No audio OR video? */
 	TF_OPEN_ASSERT(!file->tpackets && !file->vpackets)
 
 	/* Apparently there are 2 more theora and 2 more vorbis headers next. */
 	#define TPACKETS (file->tpackets && (file->tpackets < 3))
-	#define VPACKETS (file->vpackets && (file->vpackets < 3))
+	#define VPACKETS (file->vpackets && (file->vpackets < file->vtracks + 2))
 	while (TPACKETS || VPACKETS)
 	{
 		while (TPACKETS)
@@ -202,15 +218,15 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 		while (VPACKETS)
 		{
 			if (ogg_stream_packetout(
-				&file->vstream,
+				&file->vstream[file->vtrack],
 				&packet
 			) != 1) {
 				/* Get more data? */
 				break;
 			}
 			TF_OPEN_ASSERT(vorbis_synthesis_headerin(
-				&file->vinfo,
-				&file->vcomment,
+				&file->vinfo[0],
+				&file->vcomment[0],
 				&packet
 			))
 			file->vpackets += 1;
@@ -287,7 +303,7 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 	{
 		file->vdsp_init = vorbis_synthesis_init(
 			&file->vdsp,
-			&file->vinfo
+			&file->vinfo[file->vtrack]
 		) == 0;
 		TF_OPEN_ASSERT(!file->vdsp_init)
 		file->vblock_init = vorbis_block_init(
@@ -350,14 +366,20 @@ void tf_close(OggTheora_File *file)
 	}
 	if (file->vpackets)
 	{
-		ogg_stream_clear(&file->vstream);
+		ogg_stream_clear(&file->vstream[file->vtrack]);
 	}
 
 	/* Metadata */
 	th_info_clear(&file->tinfo);
 	th_comment_clear(&file->tcomment);
-	vorbis_comment_clear(&file->vcomment);
-	vorbis_info_clear(&file->vinfo);
+	for (int i = 0; i < file->vtracks; i++)
+	{
+		vorbis_comment_clear(&file->vcomment[i]);
+		vorbis_info_clear(&file->vinfo[i]);
+	}
+	free(file->vstream);
+	free(file->vcomment);
+	free(file->vinfo);
 
 	/* Current State */
 	ogg_sync_clear(&file->sync);
@@ -418,11 +440,25 @@ void tf_audioinfo(OggTheora_File *file, int *channels, int *samplerate)
 {
 	if (channels != NULL)
 	{
-		*channels = file->vinfo.channels;
+		*channels = file->vinfo[file->vtrack].channels;
 	}
 	if (samplerate != NULL)
 	{
-		*samplerate = file->vinfo.rate;
+		*samplerate = file->vinfo[file->vtrack].rate;
+	}
+}
+
+int tf_setaudiotrack(OggTheora_File *file, int vtrack)
+{
+	// TODO: Flush buffer immediately if playing?
+	if (vtrack >= 0 && vtrack < file->vtracks)
+	{
+		file->vtrack = vtrack;
+		return 1;
+	}
+	else
+	{
+		return 0;
 	}
 }
 
@@ -439,7 +475,7 @@ void tf_reset(OggTheora_File *file)
 	}
 	if (file->vpackets)
 	{
-		ogg_stream_reset(&file->vstream);
+		ogg_stream_reset(&file->vstream[file->vtrack]);
 	}
 	ogg_sync_reset(&file->sync);
 	file->io.seek_func(file->datasource, 0, SEEK_SET);
@@ -559,7 +595,7 @@ int tf_readaudio(OggTheora_File *file, float *buffer, int samples)
 		{
 			/* I bet this beats the crap out of the CPU cache... */
 			for (frame = 0; frame < frames; frame += 1)
-			for (chan = 0; chan < file->vinfo.channels; chan += 1)
+			for (chan = 0; chan < file->vinfo[file->vtrack].channels; chan += 1)
 			{
 				buffer[offset++] = pcm[chan][frame];
 				if (offset >= samples)
@@ -576,7 +612,7 @@ int tf_readaudio(OggTheora_File *file, float *buffer, int samples)
 		else /* No audio available left in current packet? */
 		{
 			/* Keep trying to get a usable packet */
-			if (!INTERNAL_getNextPacket(file, &file->vstream, &packet))
+			if (!INTERNAL_getNextPacket(file, &file->vstream[file->vtrack], &packet))
 			{
 				/* ... unless there's nothing left for us to read. */
 				return offset;

@@ -189,6 +189,9 @@ public static class Theorafile
 	);
 
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+	public static extern int tf_setaudiotrack(IntPtr file, int track);
+
+	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 	public static extern int tf_eos(IntPtr file);
 
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
