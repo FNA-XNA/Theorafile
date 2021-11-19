@@ -146,13 +146,27 @@ public static class Theorafile
 		byte* fname,
 		IntPtr file
 	);
+	[DllImport(nativeLibName, EntryPoint = "tf_fopen", CallingConvention = CallingConvention.Cdecl)]
+	private static extern unsafe int INTERNAL_tf_fopen(
+		[MarshalAs(UnmanagedType.LPStr)] string fname,
+		IntPtr file
+	);
 	public static unsafe int tf_fopen(string fname, out IntPtr file)
 	{
 		file = AllocTheoraFile();
 
-		byte* utf8Fname = Utf8Encode(fname);
-		int result = INTERNAL_tf_fopen(utf8Fname, file);
-		Marshal.FreeHGlobal((IntPtr) utf8Fname);
+		int result;
+		if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+		{
+			/* Windows fopen doesn't like UTF8, use LPCSTR and pray */
+			result = INTERNAL_tf_fopen(fname, file);
+		}
+		else
+		{
+			byte* utf8Fname = Utf8Encode(fname);
+			result = INTERNAL_tf_fopen(utf8Fname, file);
+			Marshal.FreeHGlobal((IntPtr) utf8Fname);
+		}
 		return result;
 	}
 
