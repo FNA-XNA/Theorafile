@@ -60,7 +60,7 @@ static inline void INTERNAL_queueOggPage(OggTheora_File *file)
 {
 	if (file->tpackets)
 	{
-		ogg_stream_pagein(&file->tstream, &file->page);
+		ogg_stream_pagein(&file->tstream[file->ttrack], &file->page);
 	}
 	if (file->vpackets)
 	{
@@ -115,6 +115,9 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 	int errcode = TF_EUNKNOWN;
 	vorbis_info vinfo;
 	vorbis_comment vcomment;
+	th_info tinfo;
+	th_comment tcomment;
+	int i;
 
 	if (datasource == NULL)
 	{
@@ -132,8 +135,8 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 	ogg_sync_init(&file->sync);
 	vorbis_info_init(&vinfo);
 	vorbis_comment_init(&vcomment);
-	th_info_init(&file->tinfo);
-	th_comment_init(&file->tcomment);
+	th_info_init(&tinfo);
+	th_comment_init(&tcomment);
 
 	/* Is there even data for us to read...? */
 	TF_OPEN_ASSERT(INTERNAL_readOggData(file) <= 0)
@@ -152,14 +155,25 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 		ogg_stream_pagein(&filler, &file->page);
 		ogg_stream_packetout(&filler, &packet);
 
-		if (!file->tpackets && (th_decode_headerin(
-			&file->tinfo,
-			&file->tcomment,
+		if (th_decode_headerin(
+			&tinfo,
+			&tcomment,
 			&tsetup,
 			&packet
-		) >= 0)) {
-			memcpy(&file->tstream, &filler, sizeof(filler));
-			file->tpackets = 1;
+		) >= 0) {
+			file->tinfo = realloc(file->tinfo, (file->ttracks + 1) * sizeof(file->tinfo[0]));
+			file->tcomment = realloc(file->tcomment, (file->ttracks + 1) * sizeof(file->tcomment[0]));
+			file->tstream = realloc(file->tstream, (file->ttracks + 1) * sizeof(file->tstream[0]));
+			file->tdec = realloc(file->tdec, (file->ttracks + 1) * sizeof(file->tdec[0]));
+			file->tinfo[file->ttracks] = tinfo;
+			file->tcomment[file->ttracks] = tcomment;
+			memcpy(&file->tstream[file->ttracks], &filler, sizeof(filler));
+			file->ttracks += 1;
+			file->tpackets += 1;
+
+			/* Reset this for other possible Theora streams */
+			th_info_init(&tinfo);
+			th_comment_init(&tcomment);
 		}
 		else if (vorbis_synthesis_headerin(
 			&vinfo,
@@ -188,27 +202,29 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 
 	vorbis_comment_clear(&vcomment);
 	vorbis_info_clear(&vinfo);
+	th_info_init(&tinfo);
+	th_comment_init(&tcomment);
 
 	/* No audio OR video? */
 	TF_OPEN_ASSERT(!file->tpackets && !file->vpackets)
 
 	/* Apparently there are 2 more theora and 2 more vorbis headers next. */
-	#define TPACKETS (file->tpackets && (file->tpackets < 3))
+	#define TPACKETS (file->tpackets && (file->tpackets < (file->ttracks + 2)))
 	#define VPACKETS (file->vpackets && (file->vpackets < (file->vtracks + 2)))
 	while (TPACKETS || VPACKETS)
 	{
 		while (TPACKETS)
 		{
 			if (ogg_stream_packetout(
-				&file->tstream,
+				&file->tstream[file->ttrack],
 				&packet
 			) != 1) {
 				/* Get more data? */
 				break;
 			}
 			TF_OPEN_ASSERT(!th_decode_headerin(
-				&file->tinfo,
-				&file->tcomment,
+				&file->tinfo[0],
+				&file->tcomment[0],
 				&tsetup,
 				&packet
 			))
@@ -246,36 +262,36 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 	#undef VPACKETS
 
 	/* Set up Theora stream */
-	if (file->tpackets)
+	for (int i = 0; i < file->ttracks; i += 1)
 	{
 		/* th_decode_alloc() docs say to check for
 		 * insanely large frames yourself.
 		 */
 		TF_OPEN_ASSERT(
-			(file->tinfo.frame_width > 99999) ||
-			(file->tinfo.frame_height > 99999)
+			(file->tinfo[i].frame_width > 99999) ||
+			(file->tinfo[i].frame_height > 99999)
 		)
 
 		/* FIXME: We treat "unspecified" as NTSC :shrug: */
-		if (	(file->tinfo.colorspace != TH_CS_UNSPECIFIED) &&
-			(file->tinfo.colorspace != TH_CS_ITU_REC_470M) &&
-			(file->tinfo.colorspace != TH_CS_ITU_REC_470BG)	)
+		if (	(file->tinfo[i].colorspace != TH_CS_UNSPECIFIED) &&
+			(file->tinfo[i].colorspace != TH_CS_ITU_REC_470M) &&
+			(file->tinfo[i].colorspace != TH_CS_ITU_REC_470BG)	)
 		{
 			errcode = TF_EUNSUPPORTED;
 			goto fail;
 		}
 
-		if (	file->tinfo.pixel_fmt != TH_PF_420 &&
-			file->tinfo.pixel_fmt != TH_PF_422 &&
-			file->tinfo.pixel_fmt != TH_PF_444	)
+		if (	file->tinfo[i].pixel_fmt != TH_PF_420 &&
+			file->tinfo[i].pixel_fmt != TH_PF_422 &&
+			file->tinfo[i].pixel_fmt != TH_PF_444	)
 		{
 			errcode = TF_EUNSUPPORTED;
 			goto fail;
 		}
 
 		/* The decoder, at last! */
-		file->tdec = th_decode_alloc(&file->tinfo, tsetup);
-		TF_OPEN_ASSERT(!file->tdec)
+		file->tdec[i] = th_decode_alloc(&file->tinfo[i], tsetup);
+		TF_OPEN_ASSERT(!file->tdec[i])
 
 		/* Disable all post-processing in the decoder.
 		 * FIXME: Maybe an API to set this?
@@ -284,7 +300,7 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 		 * FIXME: drop the quality level if we're not keeping up.
 		 */
 		th_decode_ctl(
-			file->tdec,
+			file->tdec[i],
 			TH_DECCTL_SET_PPLEVEL,
 			&pp_level_max,
 			sizeof(pp_level_max)
@@ -346,10 +362,14 @@ void tf_close(OggTheora_File *file)
 	int i;
 
 	/* Theora Data */
-	if (file->tdec != NULL)
+	for (i = 0; i < file->ttracks; i += 1)
 	{
-		th_decode_free(file->tdec);
+		if (file->tdec[i] != NULL)
+		{
+			th_decode_free(file->tdec[i]);
+		}
 	}
+	free(file->tdec);
 
 	/* Vorbis Data */
 	if (file->vblock_init)
@@ -362,26 +382,32 @@ void tf_close(OggTheora_File *file)
 	}
 
 	/* Stream Data */
-	if (file->tpackets)
+	for (i = 0; i < file->ttracks; i += 1)
 	{
-		ogg_stream_clear(&file->tstream);
+		ogg_stream_clear(&file->tstream[i]);
 	}
-	if (file->vpackets)
+	for (i = 0; i < file->vtracks; i += 1)
 	{
-		ogg_stream_clear(&file->vstream[file->vtrack]);
+		ogg_stream_clear(&file->vstream[i]);
 	}
 
 	/* Metadata */
-	th_info_clear(&file->tinfo);
-	th_comment_clear(&file->tcomment);
+	for (i = 0; i < file->ttracks; i += 1)
+	{
+		th_info_clear(&file->tinfo[i]);
+		th_comment_clear(&file->tcomment[i]);
+	}
 	for (i = 0; i < file->vtracks; i += 1)
 	{
 		vorbis_comment_clear(&file->vcomment[i]);
 		vorbis_info_clear(&file->vinfo[i]);
 	}
+	free(file->tstream);
+	free(file->tcomment);
 	free(file->vstream);
 	free(file->vcomment);
 	free(file->vinfo);
+	free(file->tinfo);
 
 	/* Current State */
 	ogg_sync_clear(&file->sync);
@@ -412,19 +438,19 @@ void tf_videoinfo(
 ) {
 	if (width != NULL)
 	{
-		*width = file->tinfo.pic_width;
+		*width = file->tinfo[file->ttrack].pic_width;
 	}
 	if (height != NULL)
 	{
-		*height = file->tinfo.pic_height;
+		*height = file->tinfo[file->ttrack].pic_height;
 	}
 	if (fps != NULL)
 	{
-		if (file->tinfo.fps_denominator != 0)
+		if (file->tinfo[file->ttrack].fps_denominator != 0)
 		{
 			*fps = (
-				((double) file->tinfo.fps_numerator) /
-				((double) file->tinfo.fps_denominator)
+				((double) file->tinfo[file->ttrack].fps_numerator) /
+				((double) file->tinfo[file->ttrack].fps_denominator)
 			);
 		}
 		else
@@ -434,7 +460,7 @@ void tf_videoinfo(
 	}
 	if (fmt != NULL)
 	{
-		*fmt = file->tinfo.pixel_fmt;
+		*fmt = file->tinfo[file->ttrack].pixel_fmt;
 	}
 }
 
@@ -464,6 +490,20 @@ int tf_setaudiotrack(OggTheora_File *file, int vtrack)
 	}
 }
 
+int tf_setvideotrack(OggTheora_File *file, int ttrack)
+{
+	/* Note there may be a slight delay changing track midstream. */
+	if (ttrack >= 0 && ttrack < file->ttracks)
+	{
+		file->ttrack = ttrack;
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 int tf_eos(OggTheora_File *file)
 {
 	return file->eos;
@@ -473,7 +513,7 @@ void tf_reset(OggTheora_File *file)
 {
 	if (file->tpackets)
 	{
-		ogg_stream_reset(&file->tstream);
+		ogg_stream_reset(&file->tstream[file->ttrack]);
 	}
 	if (file->vpackets)
 	{
@@ -500,7 +540,7 @@ int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 	for (i = 0; i < numframes; i += 1)
 	{
 		/* Keep trying to get a usable packet */
-		if (!INTERNAL_getNextPacket(file, &file->tstream, &packet))
+		if (!INTERNAL_getNextPacket(file, &file->tstream[file->ttrack], &packet))
 		{
 			/* ... unless there's nothing left for us to read. */
 			if (retval)
@@ -511,7 +551,7 @@ int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 		}
 
 		rc = th_decode_packetin(
-			file->tdec,
+			file->tdec[file->ttrack],
 			&packet,
 			&granulepos
 		);
@@ -528,7 +568,7 @@ int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 
 	if (retval) /* New frame! */
 	{
-		if (th_decode_ycbcr_out(file->tdec, ycbcr) != 0)
+		if (th_decode_ycbcr_out(file->tdec[file->ttrack], ycbcr) != 0)
 		{
 			return 0; /* Uhh?! */
 		}
@@ -545,35 +585,35 @@ int tf_readvideo(OggTheora_File *file, char *buffer, int numframes)
 				); \
 			}
 		/* Y */
-		w = file->tinfo.pic_width;
-		h = file->tinfo.pic_height;
+		w = file->tinfo[file->ttrack].pic_width;
+		h = file->tinfo[file->ttrack].pic_height;
 		off = (
-			(file->tinfo.pic_x & ~1) +
+			(file->tinfo[file->ttrack].pic_x & ~1) +
 			ycbcr[0].stride *
-			(file->tinfo.pic_y & ~1)
+			(file->tinfo[file->ttrack].pic_y & ~1)
 		);
 		TF_COPY_CHANNEL(0)
 
 		/* U/V */
-		if (file->tinfo.pixel_fmt == TH_PF_420)
+		if (file->tinfo[file->ttrack].pixel_fmt == TH_PF_420)
 		{
 			/* Subsampled in both dimensions */
 			w /= 2;
 			h /= 2;
 			off = (
-				(file->tinfo.pic_x / 2) +
+				(file->tinfo[file->ttrack].pic_x / 2) +
 				(ycbcr[1].stride) *
-				(file->tinfo.pic_y / 2)
+				(file->tinfo[file->ttrack].pic_y / 2)
 			);
 		}
-		else if (file->tinfo.pixel_fmt == TH_PF_422)
+		else if (file->tinfo[file->ttrack].pixel_fmt == TH_PF_422)
 		{
 			/* Subsampled only horizontally */
 			w /= 2;
 			off = (
-				(file->tinfo.pic_x / 2) +
+				(file->tinfo[file->ttrack].pic_x / 2) +
 				(ycbcr[1].stride) *
-				(file->tinfo.pic_y & ~1)
+				(file->tinfo[file->ttrack].pic_y & ~1)
 			);
 		}
 		TF_COPY_CHANNEL(1)
