@@ -63,21 +63,23 @@ typedef struct OggTheora_File
 	/* Stream Data */
 	int tpackets;
 	int vpackets;
-	ogg_stream_state tstream;
+	ogg_stream_state *tstream;
 	ogg_stream_state *vstream;
 
 	/* Metadata */
-	th_info tinfo;
+	th_info *tinfo;
 	vorbis_info *vinfo;
-	th_comment tcomment;
+	th_comment *tcomment;
 	vorbis_comment *vcomment;
 
 	/* Track data */
 	int vtracks;
 	int vtrack;
+	int ttracks;
+	int ttrack;
 
 	/* Theora Data */
-	th_dec_ctx *tdec;
+	th_dec_ctx **tdec;
 
 	/* Vorbis Data */
 	int vdsp_init;
@@ -146,6 +148,18 @@ DECLSPEC int tf_readaudio(OggTheora_File *file, float *buffer, int samples);
  * clean without any artifacts from transitioning between tracks.
  */
 DECLSPEC int tf_setaudiotrack(OggTheora_File *file, int vtrack);
+
+/* Support for multiple videotracks in a single file
+ *
+ * Note that this function is NOT thread-safe! You should put a mutex around it
+ * if the file is being accessed from separate threads.
+ *
+ * Also note that when called mid-stream, switching to the new track may take
+ * some time whie it finishes reading the current packet. When starting the
+ * decode, setting this _before_ reading should ensure that the track is fully
+ * clean without any artifacts from transitioning between tracks.
+ */
+DECLSPEC int tf_setvideotrack(OggTheora_File *file, int ttrack);
 
 #ifdef __cplusplus
 }
