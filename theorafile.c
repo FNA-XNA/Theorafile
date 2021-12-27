@@ -262,7 +262,7 @@ int tf_open_callbacks(void *datasource, OggTheora_File *file, tf_callbacks io)
 	#undef VPACKETS
 
 	/* Set up Theora stream */
-	for (int i = 0; i < file->ttracks; i += 1)
+	for (i = 0; i < file->ttracks; i += 1)
 	{
 		/* th_decode_alloc() docs say to check for
 		 * insanely large frames yourself.
