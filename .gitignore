@@ -1,3 +1,6 @@
 .DS_Store
 xcuserdata/
 *.xcworkspace/
+
+bin/
+obj/
