@@ -19,9 +19,16 @@ ifneq (,$(findstring apple-darwin,$(TRIPLET)))
 endif
 ifneq (,$(findstring x86_64,$(TRIPLET)))
 	DEFINES += -DOC_X86_ASM -DOC_X86_64_ASM
+	TFSRC_ARCH_OPT = $(TFSRC_ARCH_X86)
 endif
 ifneq (,$(findstring i686,$(TRIPLET)))
 	DEFINES += -DOC_X86_ASM
+	TFSRC_ARCH_OPT = $(TFSRC_ARCH_X86)
+endif
+# this requires the compiler to support the ARM Neon, Media, and EDSP extensions
+ifneq (,$(findstring armv7,$(TRIPLET)))
+	DEFINES += -DOC_ARM_ASM -DOC_ARM_ASM_EDSP -DOC_ARM_ASM_MEDIA -DOC_ARM_ASM_NEON
+	TFSRC_ARCH_OPT = $(TFSRC_ARCH_AARCH32)
 endif
 
 # Compiler
@@ -38,6 +45,8 @@ else
 	CFLAGS += -fpic -fPIC
 endif
 
+LIB = libtheorafile.$(TARGET)
+
 CFLAGS += -O3
 
 SRCDIR = $(dir $(MAKEFILE_LIST))
@@ -48,7 +57,8 @@ vpath %.c $(SRCDIR)
 INCLUDES = -I$(SRCDIR) -I$(SRCDIR)/lib -I$(SRCDIR)/lib/ogg -I$(SRCDIR)/lib/vorbis -I$(SRCDIR)/lib/theora
 
 # Source
-TFSRC = \
+TFSRC = $(TFSRC_ARCH_GENERIC) $(TFSRC_ARCH_OPT)
+TFSRC_ARCH_GENERIC = \
 	theorafile.c \
 	lib/ogg/bitwise.c \
 	lib/ogg/framing.c \
@@ -84,18 +94,37 @@ TFSRC = \
 	lib/theora/tinfo.c \
 	lib/theora/internal.c \
 	lib/theora/quant.c \
-	lib/theora/state.c \
+	lib/theora/state.c
+TFSRC_ARCH_X86 = \
 	lib/theora/x86/mmxfrag.c \
 	lib/theora/x86/mmxidct.c \
 	lib/theora/x86/mmxstate.c \
+	lib/theora/x86/sse2idct.c \
+	lib/theora/x86/x86cpu.c \
 	lib/theora/x86/x86state.c
+AARCH32_ASSEMBLY_NAMES = bits frag idct loop
+AARCH32_ASSEMBLY_GNU_SOURCES = $(foreach name,$(AARCH32_ASSEMBLY_NAMES) opts,lib/theora/arm/arm$(name)-gnu.S)
+AARCH32_ASSEMBLY_OBJS = $(foreach name,$(AARCH32_ASSEMBLY_NAMES),lib/theora/arm/arm$(name).o)
+TFSRC_ARCH_AARCH32 = \
+	lib/theora/arm/armstate.c \
+	lib/theora/arm/armcpu.c \
+	$(AARCH32_ASSEMBLY_OBJS)
 
 # Targets
-all: $(TFSRC)
-	$(CC) $(CFLAGS) -shared -o libtheorafile.$(TARGET) $^ $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
-
+.PHONY: lib all clean test
+lib: $(LIB)
+all: $(LIB) theorafile-test
 clean:
-	rm -f libtheorafile.$(TARGET)
-
-test:
-	$(CC) -g -o theorafile-test sdl2test/sdl2test.c $(TFSRC) $(INCLUDES) $(DEFINES) `sdl2-config --cflags --libs` -lm
+	rm -f $(LIB) theorafile-test $(AARCH32_ASSEMBLY_OBJS) $(AARCH32_ASSEMBLY_GNU_SOURCES)
+test: theorafile-test
+$(LIB): $(TFSRC)
+	$(CC) $(CFLAGS) -shared -o $@ $^ $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
+theorafile-test: $(TFSRC)
+	$(CC) $(CFLAGS) -g -o $@ sdl2test/sdl2test.c $(TFSRC) $(INCLUDES) $(DEFINES) `sdl2-config --cflags --libs` -lm
+lib/theora/arm/armfrag.o: lib/theora/arm/armopts-gnu.S
+.INTERMEDIATE: lib/theora/arm/armopts-gnu.S
+.SUFFIXES:
+%-gnu.S: %.s
+	lib/theora/arm/arm2gnu.pl < $< > $@
+%.o: %-gnu.S
+	$(CC) -c -o $@ -Ilib/theora/arm $<
