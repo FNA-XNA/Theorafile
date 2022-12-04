@@ -33,10 +33,13 @@ jobs:
       with:
         submodules: true
 
-    - name: Build
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Build (Debug)
       run: msbuild visualc\libtheorafile.sln /p:Configuration=Debug /p:Platform=x86
 
-    - name: Build
+    - name: Build (Release)
       run: msbuild visualc\libtheorafile.sln /p:Configuration=Release /p:Platform=x86
 
   windows-mingw:
