@@ -25,6 +25,20 @@ jobs:
     - name: Build
       run: make
 
+  windows-msvc:
+    name: Windows (MSVC)
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - name: Build
+      run: msbuild visualc\libtheorafile.sln /p:Configuration=Debug /p:Platform=x86
+
+    - name: Build
+      run: msbuild visualc\libtheorafile.sln /p:Configuration=Release /p:Platform=x86
+
   windows-mingw:
     name: Windows (MinGW)
     runs-on: windows-latest
