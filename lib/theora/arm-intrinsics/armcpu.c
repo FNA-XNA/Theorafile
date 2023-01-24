@@ -19,11 +19,14 @@
 
 #include "armcpu.h"
 
-#if !defined(OC_ARM_ASM)|| \
- !defined(OC_ARM_ASM_EDSP)&&!defined(OC_ARM_ASM_MEDIA)&& \
- !defined(OC_ARM_ASM_NEON)
+#if !defined(OC_ARM_ASM) || !defined(OC_ARM_ASM_NEON)
 ogg_uint32_t oc_cpu_flags_get(void){
   return 0;
+}
+
+#elif defined(__aarch64__) || defined(_M_ARM64)
+ogg_uint32_t oc_cpu_flags_get(void) {
+  return OC_CPU_ARM_NEON;
 }
 
 #elif defined(_MSC_VER)
@@ -38,35 +41,20 @@ ogg_uint32_t oc_cpu_flags_get(void){
   /*MSVC has no inline __asm support for ARM, but it does let you __emit
      instructions via their assembled hex code.
     All of these instructions should be essentially nops.*/
-# if defined(OC_ARM_ASM_EDSP)
+# if defined(OC_ARM_ASM_NEON)
   __try{
-    /*PLD [r13]*/
-    __emit(0xF5DDF000);
-    flags|=OC_CPU_ARM_EDSP;
-  }
-  __except(GetExceptionCode()==EXCEPTION_ILLEGAL_INSTRUCTION){
-    /*Ignore exception.*/
-  }
-#  if defined(OC_ARM_ASM_MEDIA)
-  __try{
-    /*SHADD8 r3,r3,r3*/
-    __emit(0xE6333F93);
-    flags|=OC_CPU_ARM_MEDIA;
-  }
-  __except(GetExceptionCode()==EXCEPTION_ILLEGAL_INSTRUCTION){
-    /*Ignore exception.*/
-  }
-#   if defined(OC_ARM_ASM_NEON)
-  __try{
+#  if defined(__aarch64__) || defined(_M_ARM64)
+    /*MOV v0.16B,v0.16B*/
+    __emit(0x4EA01C00);
+#  else
     /*VORR q0,q0,q0*/
     __emit(0xF2200150);
+#  endif
     flags|=OC_CPU_ARM_NEON;
   }
   __except(GetExceptionCode()==EXCEPTION_ILLEGAL_INSTRUCTION){
     /*Ignore exception.*/
   }
-#   endif
-#  endif
 # endif
   return flags;
 }
@@ -91,15 +79,10 @@ ogg_uint32_t oc_cpu_flags_get(void){
     while(fgets(buf,511,fin)!=NULL){
       if(memcmp(buf,"Features",8)==0){
         char *p;
-        p=strstr(buf," edsp");
-        if(p!=NULL&&(p[5]==' '||p[5]=='\n'))flags|=OC_CPU_ARM_EDSP;
         p=strstr(buf," neon");
         if(p!=NULL&&(p[5]==' '||p[5]=='\n'))flags|=OC_CPU_ARM_NEON;
-      }
-      if(memcmp(buf,"CPU architecture:",17)==0){
-        int version;
-        version=atoi(buf+17);
-        if(version>=6)flags|=OC_CPU_ARM_MEDIA;
+        p=strstr(buf," asimd");
+        if(p!=NULL&&(p[6]==' '||p[6]=='\n'))flags|=OC_CPU_ARM_NEON;
       }
     }
     fclose(fin);
@@ -113,28 +96,6 @@ ogg_uint32_t oc_cpu_flags_get(void){
 
 ogg_uint32_t oc_cpu_flags_get(void) {
   ogg_uint32_t flags = 0;
-
-#if defined(OC_ARM_ASM_EDSP) || defined(OC_ARM_ASM_MEDIA)
-
-  if (_swi(OS_Byte,_IN(0)|_IN(2)|_RETURN(1), 129, 0xFF) <= 0xA9)
-     _swix(OS_Module, _INR(0,1), 1, "System:Modules.CallASWI");
-
-  ogg_uint32_t features;
-  _kernel_oserror* test = _swix(OS_PlatformFeatures, _IN(0)|_OUT(0), 0, &features);
-  if (test == NULL) {
-#if defined(OC_ARM_ASM_EDSP)
-    if((features>>10 & 1) == 1)flags|=OC_CPU_ARM_EDSP;
-#endif
-
-#if defined(OC_ARM_ASM_MEDIA)
-    if ((features>>31 & 1) == 1) {
-      ogg_uint32_t shadd = 0;
-      test =_swix(OS_PlatformFeatures, _INR(0,1)|_OUT(0), 34, 29, &shadd);
-      if (test==NULL && shadd==1)flags|=OC_CPU_ARM_MEDIA;
-    }
-#endif
-  }
-#endif
 
 #if defined(OC_ARM_ASM_NEON)
   ogg_uint32_t mvfr1;
