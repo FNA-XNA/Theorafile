@@ -59,4 +59,7 @@ jobs:
       with:
         operating_system: freebsd
         version: '13.2'
-        run: gmake
+        run: |
+          sudo pkg update
+          sudo pkg install -y gmake
+          gmake
