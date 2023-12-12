@@ -48,15 +48,15 @@ jobs:
       run: mingw32-make
 
   freebsd:
-    runs-on: macos-12
+    runs-on: ubuntu-latest
     name: FreeBSD
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: true
     - name: Build
-      uses: vmactions/freebsd-vm@v0
+      uses: cross-platform-actions/action@v0.19.1
       with:
-        usesh: true
-        prepare: pkg install -y gmake
+        operating_system: freebsd
+        version: '13.2'
         run: gmake
