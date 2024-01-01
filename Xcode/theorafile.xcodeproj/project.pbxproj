@@ -48,6 +48,76 @@
 		7B2FBA3E21911F170087816E /* idct.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0A21911F170087816E /* idct.c */; };
 		7B2FBA3F21911F170087816E /* quant.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0B21911F170087816E /* quant.c */; };
 		7B2FBA4421911F170087816E /* huffdec.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA1621911F170087816E /* huffdec.c */; };
+		7B5C042B2B4332D20032DA39 /* framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9A221911F170087816E /* framing.c */; };
+		7B5C042C2B4332D20032DA39 /* bitwise.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9A421911F170087816E /* bitwise.c */; };
+		7B5C042D2B4332D60032DA39 /* analysis.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9C421911F170087816E /* analysis.c */; };
+		7B5C042E2B4332D60032DA39 /* psy.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9D321911F170087816E /* psy.c */; };
+		7B5C042F2B4332D60032DA39 /* bitrate.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9C921911F170087816E /* bitrate.c */; };
+		7B5C04302B4332D60032DA39 /* floor1.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9DB21911F170087816E /* floor1.c */; };
+		7B5C04312B4332D60032DA39 /* mapping0.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9E121911F170087816E /* mapping0.c */; };
+		7B5C04322B4332D60032DA39 /* mdct.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9C021911F170087816E /* mdct.c */; };
+		7B5C04332B4332D60032DA39 /* lpc.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9E321911F170087816E /* lpc.c */; };
+		7B5C04342B4332D60032DA39 /* floor0.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9C621911F170087816E /* floor0.c */; };
+		7B5C04352B4332D60032DA39 /* codebook.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9C521911F170087816E /* codebook.c */; };
+		7B5C04362B4332D60032DA39 /* envelope.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9C221911F170087816E /* envelope.c */; };
+		7B5C04372B4332D60032DA39 /* res0.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9A821911F170087816E /* res0.c */; };
+		7B5C04382B4332D60032DA39 /* smallft.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9D721911F170087816E /* smallft.c */; };
+		7B5C04392B4332D60032DA39 /* block.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9A921911F170087816E /* block.c */; };
+		7B5C043A2B4332D60032DA39 /* vinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9A621911F170087816E /* vinfo.c */; };
+		7B5C043B2B4332D60032DA39 /* synthesis.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9DD21911F170087816E /* synthesis.c */; };
+		7B5C043C2B4332D60032DA39 /* lsp.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9E521911F170087816E /* lsp.c */; };
+		7B5C043D2B4332D60032DA39 /* registry.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9E621911F170087816E /* registry.c */; };
+		7B5C043E2B4332D60032DA39 /* lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9AA21911F170087816E /* lookup.c */; };
+		7B5C043F2B4332D60032DA39 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9E721911F170087816E /* window.c */; };
+		7B5C04402B4332D60032DA39 /* sharedbook.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9DA21911F170087816E /* sharedbook.c */; };
+		7B5C04462B4332DC0032DA39 /* armfrag.c in Sources */ = {isa = PBXBuildFile; fileRef = 02A4877D2980BE69008EEDBC /* armfrag.c */; };
+		7B5C04472B4332DC0032DA39 /* decode.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9F921911F170087816E /* decode.c */; };
+		7B5C04482B4332DC0032DA39 /* decinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9F721911F170087816E /* decinfo.c */; };
+		7B5C04492B4332DC0032DA39 /* decapiwrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0721911F170087816E /* decapiwrapper.c */; };
+		7B5C044A2B4332DC0032DA39 /* armidct.c in Sources */ = {isa = PBXBuildFile; fileRef = 02A487792980BE69008EEDBC /* armidct.c */; };
+		7B5C044B2B4332DC0032DA39 /* bitpack.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0921911F170087816E /* bitpack.c */; };
+		7B5C044C2B4332DC0032DA39 /* armstate.c in Sources */ = {isa = PBXBuildFile; fileRef = 02A487772980BE69008EEDBC /* armstate.c */; };
+		7B5C044D2B4332DC0032DA39 /* quant.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0B21911F170087816E /* quant.c */; };
+		7B5C044E2B4332DC0032DA39 /* theorafile.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB807219117A40087816E /* theorafile.c */; };
+		7B5C044F2B4332DC0032DA39 /* idct.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0A21911F170087816E /* idct.c */; };
+		7B5C04502B4332DC0032DA39 /* tinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9EE21911F170087816E /* tinfo.c */; };
+		7B5C04512B4332DC0032DA39 /* fragment.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9EC21911F170087816E /* fragment.c */; };
+		7B5C04522B4332DC0032DA39 /* dequant.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9FA21911F170087816E /* dequant.c */; };
+		7B5C04532B4332DC0032DA39 /* armloop.c in Sources */ = {isa = PBXBuildFile; fileRef = 02A4877B2980BE69008EEDBC /* armloop.c */; };
+		7B5C04542B4332DC0032DA39 /* apiwrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9FE21911F170087816E /* apiwrapper.c */; };
+		7B5C04552B4332DC0032DA39 /* state.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9F521911F170087816E /* state.c */; };
+		7B5C04562B4332DC0032DA39 /* internal.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9FC21911F170087816E /* internal.c */; };
+		7B5C04572B4332DC0032DA39 /* huffdec.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA1621911F170087816E /* huffdec.c */; };
+		7B5C04582B4332DC0032DA39 /* armcpu.c in Sources */ = {isa = PBXBuildFile; fileRef = 02A487782980BE69008EEDBC /* armcpu.c */; };
+		7B5C04592B4332DD0032DA39 /* armfrag.c in Sources */ = {isa = PBXBuildFile; fileRef = 02A4877D2980BE69008EEDBC /* armfrag.c */; };
+		7B5C045A2B4332DD0032DA39 /* decode.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9F921911F170087816E /* decode.c */; };
+		7B5C045B2B4332DD0032DA39 /* decinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9F721911F170087816E /* decinfo.c */; };
+		7B5C045C2B4332DD0032DA39 /* decapiwrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0721911F170087816E /* decapiwrapper.c */; };
+		7B5C045D2B4332DD0032DA39 /* armidct.c in Sources */ = {isa = PBXBuildFile; fileRef = 02A487792980BE69008EEDBC /* armidct.c */; };
+		7B5C045E2B4332DD0032DA39 /* bitpack.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0921911F170087816E /* bitpack.c */; };
+		7B5C045F2B4332DD0032DA39 /* armstate.c in Sources */ = {isa = PBXBuildFile; fileRef = 02A487772980BE69008EEDBC /* armstate.c */; };
+		7B5C04602B4332DD0032DA39 /* quant.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0B21911F170087816E /* quant.c */; };
+		7B5C04612B4332DD0032DA39 /* theorafile.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB807219117A40087816E /* theorafile.c */; };
+		7B5C04622B4332DD0032DA39 /* idct.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0A21911F170087816E /* idct.c */; };
+		7B5C04632B4332DD0032DA39 /* tinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9EE21911F170087816E /* tinfo.c */; };
+		7B5C04642B4332DD0032DA39 /* fragment.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9EC21911F170087816E /* fragment.c */; };
+		7B5C04652B4332DD0032DA39 /* dequant.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9FA21911F170087816E /* dequant.c */; };
+		7B5C04662B4332DD0032DA39 /* armloop.c in Sources */ = {isa = PBXBuildFile; fileRef = 02A4877B2980BE69008EEDBC /* armloop.c */; };
+		7B5C04672B4332DD0032DA39 /* apiwrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9FE21911F170087816E /* apiwrapper.c */; };
+		7B5C04682B4332DD0032DA39 /* state.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9F521911F170087816E /* state.c */; };
+		7B5C04692B4332DD0032DA39 /* internal.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9FC21911F170087816E /* internal.c */; };
+		7B5C046A2B4332DD0032DA39 /* huffdec.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA1621911F170087816E /* huffdec.c */; };
+		7B5C046B2B4332DD0032DA39 /* armcpu.c in Sources */ = {isa = PBXBuildFile; fileRef = 02A487782980BE69008EEDBC /* armcpu.c */; };
+		7B95AC352B43398D00E137AB /* x86cpu.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B95AC2B2B43398D00E137AB /* x86cpu.c */; };
+		7B95AC362B43398D00E137AB /* sse2trans.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B95AC2C2B43398D00E137AB /* sse2trans.h */; };
+		7B95AC372B43398D00E137AB /* x86state.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B95AC2D2B43398D00E137AB /* x86state.c */; };
+		7B95AC382B43398D00E137AB /* x86int.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B95AC2E2B43398D00E137AB /* x86int.h */; };
+		7B95AC392B43398D00E137AB /* mmxfrag.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B95AC2F2B43398D00E137AB /* mmxfrag.c */; };
+		7B95AC3A2B43398D00E137AB /* x86cpu.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B95AC302B43398D00E137AB /* x86cpu.h */; };
+		7B95AC3B2B43398D00E137AB /* sse2idct.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B95AC312B43398D00E137AB /* sse2idct.c */; };
+		7B95AC3C2B43398D00E137AB /* mmxidct.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B95AC322B43398D00E137AB /* mmxidct.c */; };
+		7B95AC3D2B43398D00E137AB /* mmxloop.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B95AC332B43398D00E137AB /* mmxloop.h */; };
+		7B95AC3E2B43398D00E137AB /* mmxstate.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B95AC342B43398D00E137AB /* mmxstate.c */; };
 		7BFBC8EA219367B900837E89 /* framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9A221911F170087816E /* framing.c */; };
 		7BFBC8EB219367B900837E89 /* bitwise.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9A421911F170087816E /* bitwise.c */; };
 		7BFBC8EC219367B900837E89 /* analysis.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9C421911F170087816E /* analysis.c */; };
@@ -70,20 +140,6 @@
 		7BFBC8FD219367B900837E89 /* synthesis.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9DD21911F170087816E /* synthesis.c */; };
 		7BFBC8FE219367B900837E89 /* vinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9A621911F170087816E /* vinfo.c */; };
 		7BFBC8FF219367B900837E89 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9E721911F170087816E /* window.c */; };
-		7BFBC900219367B900837E89 /* fragment.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9EC21911F170087816E /* fragment.c */; };
-		7BFBC901219367B900837E89 /* tinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9EE21911F170087816E /* tinfo.c */; };
-		7BFBC903219367B900837E89 /* state.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9F521911F170087816E /* state.c */; };
-		7BFBC904219367B900837E89 /* decinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9F721911F170087816E /* decinfo.c */; };
-		7BFBC905219367B900837E89 /* decode.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9F921911F170087816E /* decode.c */; };
-		7BFBC906219367B900837E89 /* dequant.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9FA21911F170087816E /* dequant.c */; };
-		7BFBC907219367B900837E89 /* internal.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9FC21911F170087816E /* internal.c */; };
-		7BFBC908219367B900837E89 /* apiwrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB9FE21911F170087816E /* apiwrapper.c */; };
-		7BFBC909219367B900837E89 /* decapiwrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0721911F170087816E /* decapiwrapper.c */; };
-		7BFBC90A219367B900837E89 /* bitpack.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0921911F170087816E /* bitpack.c */; };
-		7BFBC90B219367B900837E89 /* idct.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0A21911F170087816E /* idct.c */; };
-		7BFBC90C219367B900837E89 /* quant.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA0B21911F170087816E /* quant.c */; };
-		7BFBC90D219367B900837E89 /* huffdec.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FBA1621911F170087816E /* huffdec.c */; };
-		7BFBC90E219367B900837E89 /* theorafile.c in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FB807219117A40087816E /* theorafile.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -215,11 +271,29 @@
 		7B2FBA1621911F170087816E /* huffdec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = huffdec.c; sourceTree = "<group>"; };
 		7B2FBA1721911F170087816E /* decint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = decint.h; sourceTree = "<group>"; };
 		7B2FBA1821911F170087816E /* dequant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dequant.h; sourceTree = "<group>"; };
-		7BFBC87F219366FA00837E89 /* libtheorafile-tv.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libtheorafile-tv.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B5C04272B4331050032DA39 /* libtheorafile.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libtheorafile.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B95AC2B2B43398D00E137AB /* x86cpu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x86cpu.c; sourceTree = "<group>"; };
+		7B95AC2C2B43398D00E137AB /* sse2trans.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sse2trans.h; sourceTree = "<group>"; };
+		7B95AC2D2B43398D00E137AB /* x86state.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x86state.c; sourceTree = "<group>"; };
+		7B95AC2E2B43398D00E137AB /* x86int.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x86int.h; sourceTree = "<group>"; };
+		7B95AC2F2B43398D00E137AB /* mmxfrag.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mmxfrag.c; sourceTree = "<group>"; };
+		7B95AC302B43398D00E137AB /* x86cpu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x86cpu.h; sourceTree = "<group>"; };
+		7B95AC312B43398D00E137AB /* sse2idct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sse2idct.c; sourceTree = "<group>"; };
+		7B95AC322B43398D00E137AB /* mmxidct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mmxidct.c; sourceTree = "<group>"; };
+		7B95AC332B43398D00E137AB /* mmxloop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mmxloop.h; sourceTree = "<group>"; };
+		7B95AC342B43398D00E137AB /* mmxstate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mmxstate.c; sourceTree = "<group>"; };
+		7BFBC87F219366FA00837E89 /* libtheorafile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtheorafile.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		7B2FB6AD2191169C0087816E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7B5C04252B4331050032DA39 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -265,7 +339,8 @@
 			isa = PBXGroup;
 			children = (
 				7B2FB6B02191169C0087816E /* libtheorafile.a */,
-				7BFBC87F219366FA00837E89 /* libtheorafile-tv.a */,
+				7BFBC87F219366FA00837E89 /* libtheorafile.a */,
+				7B5C04272B4331050032DA39 /* libtheorafile.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -415,6 +490,7 @@
 		7B2FB9EB21911F170087816E /* theora */ = {
 			isa = PBXGroup;
 			children = (
+				7B95AC2A2B43398D00E137AB /* x86 */,
 				02A487722980BE69008EEDBC /* arm-intrinsics */,
 				7B2FB9EC21911F170087816E /* fragment.c */,
 				7B2FB9ED21911F170087816E /* apiwrapper.h */,
@@ -447,12 +523,43 @@
 			path = theora;
 			sourceTree = "<group>";
 		};
+		7B95AC2A2B43398D00E137AB /* x86 */ = {
+			isa = PBXGroup;
+			children = (
+				7B95AC2B2B43398D00E137AB /* x86cpu.c */,
+				7B95AC2C2B43398D00E137AB /* sse2trans.h */,
+				7B95AC2D2B43398D00E137AB /* x86state.c */,
+				7B95AC2E2B43398D00E137AB /* x86int.h */,
+				7B95AC2F2B43398D00E137AB /* mmxfrag.c */,
+				7B95AC302B43398D00E137AB /* x86cpu.h */,
+				7B95AC312B43398D00E137AB /* sse2idct.c */,
+				7B95AC322B43398D00E137AB /* mmxidct.c */,
+				7B95AC332B43398D00E137AB /* mmxloop.h */,
+				7B95AC342B43398D00E137AB /* mmxstate.c */,
+			);
+			path = x86;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		7B5C04232B4331050032DA39 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B95AC362B43398D00E137AB /* sse2trans.h in Headers */,
+				7B95AC3A2B43398D00E137AB /* x86cpu.h in Headers */,
+				7B95AC382B43398D00E137AB /* x86int.h in Headers */,
+				7B95AC3D2B43398D00E137AB /* mmxloop.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		7B2FB6AF2191169C0087816E /* theorafile */ = {
+		7B2FB6AF2191169C0087816E /* theorafile-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7B2FB6B92191169C0087816E /* Build configuration list for PBXNativeTarget "theorafile" */;
+			buildConfigurationList = 7B2FB6B92191169C0087816E /* Build configuration list for PBXNativeTarget "theorafile-iOS" */;
 			buildPhases = (
 				7B2FB6AC2191169C0087816E /* Sources */,
 				7B2FB6AD2191169C0087816E /* Frameworks */,
@@ -462,14 +569,31 @@
 			);
 			dependencies = (
 			);
-			name = theorafile;
+			name = "theorafile-iOS";
 			productName = Theorafile;
 			productReference = 7B2FB6B02191169C0087816E /* libtheorafile.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		7BFBC87E219366FA00837E89 /* theorafile-tv */ = {
+		7B5C04262B4331050032DA39 /* theorafile-macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7BFBC887219366FA00837E89 /* Build configuration list for PBXNativeTarget "theorafile-tv" */;
+			buildConfigurationList = 7B5C04282B4331050032DA39 /* Build configuration list for PBXNativeTarget "theorafile-macOS" */;
+			buildPhases = (
+				7B5C04232B4331050032DA39 /* Headers */,
+				7B5C04242B4331050032DA39 /* Sources */,
+				7B5C04252B4331050032DA39 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "theorafile-macOS";
+			productName = "theorafile-macOS";
+			productReference = 7B5C04272B4331050032DA39 /* libtheorafile.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		7BFBC87E219366FA00837E89 /* theorafile-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7BFBC887219366FA00837E89 /* Build configuration list for PBXNativeTarget "theorafile-tvOS" */;
 			buildPhases = (
 				7BFBC87B219366FA00837E89 /* Sources */,
 				7BFBC87C219366FA00837E89 /* Frameworks */,
@@ -479,9 +603,9 @@
 			);
 			dependencies = (
 			);
-			name = "theorafile-tv";
+			name = "theorafile-tvOS";
 			productName = "theorafile-tv";
-			productReference = 7BFBC87F219366FA00837E89 /* libtheorafile-tv.a */;
+			productReference = 7BFBC87F219366FA00837E89 /* libtheorafile.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -494,6 +618,9 @@
 				TargetAttributes = {
 					7B2FB6AF2191169C0087816E = {
 						CreatedOnToolsVersion = 10.1;
+					};
+					7B5C04262B4331050032DA39 = {
+						CreatedOnToolsVersion = 15.1;
 					};
 					7BFBC87E219366FA00837E89 = {
 						CreatedOnToolsVersion = 10.1;
@@ -512,8 +639,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7B2FB6AF2191169C0087816E /* theorafile */,
-				7BFBC87E219366FA00837E89 /* theorafile-tv */,
+				7B2FB6AF2191169C0087816E /* theorafile-iOS */,
+				7BFBC87E219366FA00837E89 /* theorafile-tvOS */,
+				7B5C04262B4331050032DA39 /* theorafile-macOS */,
 			);
 		};
 /* End PBXProject section */
@@ -567,6 +695,60 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7B5C04242B4331050032DA39 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B5C043B2B4332D60032DA39 /* synthesis.c in Sources */,
+				7B5C04392B4332D60032DA39 /* block.c in Sources */,
+				7B5C043D2B4332D60032DA39 /* registry.c in Sources */,
+				7B5C04402B4332D60032DA39 /* sharedbook.c in Sources */,
+				7B5C04662B4332DD0032DA39 /* armloop.c in Sources */,
+				7B5C04612B4332DD0032DA39 /* theorafile.c in Sources */,
+				7B5C043F2B4332D60032DA39 /* window.c in Sources */,
+				7B5C046A2B4332DD0032DA39 /* huffdec.c in Sources */,
+				7B5C043E2B4332D60032DA39 /* lookup.c in Sources */,
+				7B5C04372B4332D60032DA39 /* res0.c in Sources */,
+				7B5C043C2B4332D60032DA39 /* lsp.c in Sources */,
+				7B5C042D2B4332D60032DA39 /* analysis.c in Sources */,
+				7B95AC3C2B43398D00E137AB /* mmxidct.c in Sources */,
+				7B5C042F2B4332D60032DA39 /* bitrate.c in Sources */,
+				7B5C04382B4332D60032DA39 /* smallft.c in Sources */,
+				7B5C046B2B4332DD0032DA39 /* armcpu.c in Sources */,
+				7B5C04632B4332DD0032DA39 /* tinfo.c in Sources */,
+				7B5C042B2B4332D20032DA39 /* framing.c in Sources */,
+				7B5C045E2B4332DD0032DA39 /* bitpack.c in Sources */,
+				7B5C04352B4332D60032DA39 /* codebook.c in Sources */,
+				7B5C04652B4332DD0032DA39 /* dequant.c in Sources */,
+				7B5C04672B4332DD0032DA39 /* apiwrapper.c in Sources */,
+				7B5C045A2B4332DD0032DA39 /* decode.c in Sources */,
+				7B5C04342B4332D60032DA39 /* floor0.c in Sources */,
+				7B95AC372B43398D00E137AB /* x86state.c in Sources */,
+				7B5C04362B4332D60032DA39 /* envelope.c in Sources */,
+				7B5C04642B4332DD0032DA39 /* fragment.c in Sources */,
+				7B5C04592B4332DD0032DA39 /* armfrag.c in Sources */,
+				7B5C045C2B4332DD0032DA39 /* decapiwrapper.c in Sources */,
+				7B95AC352B43398D00E137AB /* x86cpu.c in Sources */,
+				7B5C042E2B4332D60032DA39 /* psy.c in Sources */,
+				7B5C043A2B4332D60032DA39 /* vinfo.c in Sources */,
+				7B95AC3E2B43398D00E137AB /* mmxstate.c in Sources */,
+				7B5C04302B4332D60032DA39 /* floor1.c in Sources */,
+				7B5C04312B4332D60032DA39 /* mapping0.c in Sources */,
+				7B5C045D2B4332DD0032DA39 /* armidct.c in Sources */,
+				7B5C04332B4332D60032DA39 /* lpc.c in Sources */,
+				7B5C042C2B4332D20032DA39 /* bitwise.c in Sources */,
+				7B5C04622B4332DD0032DA39 /* idct.c in Sources */,
+				7B5C045B2B4332DD0032DA39 /* decinfo.c in Sources */,
+				7B5C04602B4332DD0032DA39 /* quant.c in Sources */,
+				7B5C04692B4332DD0032DA39 /* internal.c in Sources */,
+				7B95AC3B2B43398D00E137AB /* sse2idct.c in Sources */,
+				7B95AC392B43398D00E137AB /* mmxfrag.c in Sources */,
+				7B5C04682B4332DD0032DA39 /* state.c in Sources */,
+				7B5C045F2B4332DD0032DA39 /* armstate.c in Sources */,
+				7B5C04322B4332D60032DA39 /* mdct.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7BFBC87B219366FA00837E89 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -575,43 +757,43 @@
 				7BFBC8EB219367B900837E89 /* bitwise.c in Sources */,
 				7BFBC8EC219367B900837E89 /* analysis.c in Sources */,
 				7BFBC8ED219367B900837E89 /* bitrate.c in Sources */,
-				02A4878C2980C544008EEDBC /* armfrag.c in Sources */,
+				7B5C04532B4332DC0032DA39 /* armloop.c in Sources */,
+				7B5C044E2B4332DC0032DA39 /* theorafile.c in Sources */,
 				7BFBC8EE219367B900837E89 /* block.c in Sources */,
+				7B5C04572B4332DC0032DA39 /* huffdec.c in Sources */,
 				7BFBC8EF219367B900837E89 /* codebook.c in Sources */,
 				7BFBC8F0219367B900837E89 /* envelope.c in Sources */,
-				02A487822980C538008EEDBC /* armstate.c in Sources */,
 				7BFBC8F1219367B900837E89 /* floor0.c in Sources */,
 				7BFBC8F2219367B900837E89 /* floor1.c in Sources */,
-				02A487862980C53D008EEDBC /* armidct.c in Sources */,
 				7BFBC8F3219367B900837E89 /* lookup.c in Sources */,
 				7BFBC8F4219367B900837E89 /* lpc.c in Sources */,
+				7B5C04582B4332DC0032DA39 /* armcpu.c in Sources */,
+				7B5C04502B4332DC0032DA39 /* tinfo.c in Sources */,
 				7BFBC8F5219367B900837E89 /* lsp.c in Sources */,
-				02A487842980C53B008EEDBC /* armcpu.c in Sources */,
+				7B5C044B2B4332DC0032DA39 /* bitpack.c in Sources */,
 				7BFBC8F6219367B900837E89 /* mapping0.c in Sources */,
+				7B5C04522B4332DC0032DA39 /* dequant.c in Sources */,
+				7B5C04542B4332DC0032DA39 /* apiwrapper.c in Sources */,
+				7B5C04472B4332DC0032DA39 /* decode.c in Sources */,
 				7BFBC8F7219367B900837E89 /* mdct.c in Sources */,
 				7BFBC8F8219367B900837E89 /* psy.c in Sources */,
+				7B5C04512B4332DC0032DA39 /* fragment.c in Sources */,
+				7B5C04462B4332DC0032DA39 /* armfrag.c in Sources */,
+				7B5C04492B4332DC0032DA39 /* decapiwrapper.c in Sources */,
 				7BFBC8F9219367B900837E89 /* registry.c in Sources */,
 				7BFBC8FA219367B900837E89 /* res0.c in Sources */,
 				7BFBC8FB219367B900837E89 /* sharedbook.c in Sources */,
 				7BFBC8FC219367B900837E89 /* smallft.c in Sources */,
+				7B5C044A2B4332DC0032DA39 /* armidct.c in Sources */,
 				7BFBC8FD219367B900837E89 /* synthesis.c in Sources */,
 				7BFBC8FE219367B900837E89 /* vinfo.c in Sources */,
+				7B5C044F2B4332DC0032DA39 /* idct.c in Sources */,
+				7B5C04482B4332DC0032DA39 /* decinfo.c in Sources */,
+				7B5C044D2B4332DC0032DA39 /* quant.c in Sources */,
+				7B5C04562B4332DC0032DA39 /* internal.c in Sources */,
+				7B5C04552B4332DC0032DA39 /* state.c in Sources */,
+				7B5C044C2B4332DC0032DA39 /* armstate.c in Sources */,
 				7BFBC8FF219367B900837E89 /* window.c in Sources */,
-				7BFBC900219367B900837E89 /* fragment.c in Sources */,
-				7BFBC901219367B900837E89 /* tinfo.c in Sources */,
-				7BFBC903219367B900837E89 /* state.c in Sources */,
-				02A487882980C53F008EEDBC /* armloop.c in Sources */,
-				7BFBC904219367B900837E89 /* decinfo.c in Sources */,
-				7BFBC905219367B900837E89 /* decode.c in Sources */,
-				7BFBC906219367B900837E89 /* dequant.c in Sources */,
-				7BFBC907219367B900837E89 /* internal.c in Sources */,
-				7BFBC908219367B900837E89 /* apiwrapper.c in Sources */,
-				7BFBC909219367B900837E89 /* decapiwrapper.c in Sources */,
-				7BFBC90A219367B900837E89 /* bitpack.c in Sources */,
-				7BFBC90B219367B900837E89 /* idct.c in Sources */,
-				7BFBC90C219367B900837E89 /* quant.c in Sources */,
-				7BFBC90D219367B900837E89 /* huffdec.c in Sources */,
-				7BFBC90E219367B900837E89 /* theorafile.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,6 +835,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -669,25 +852,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../lib;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				"OTHER_CFLAGS[sdk=appletvos*]" = (
-					"-DOC_ARM_ASM",
-					"-DOC_ARM_ASM_EDSP",
-					"-DOC_ARM_ASM_MEDIA",
-					"-DOC_ARM_ASM_NEON",
-				);
-				"OTHER_CFLAGS[sdk=appletvsimulator*]" = "";
-				"OTHER_CFLAGS[sdk=iphoneos*]" = (
-					"-DOC_ARM_ASM",
-					"-DOC_ARM_ASM_EDSP",
-					"-DOC_ARM_ASM_MEDIA",
-					"-DOC_ARM_ASM_NEON",
-				);
-				"OTHER_CFLAGS[sdk=iphonesimulator*]" = "";
-				SDKROOT = iphoneos;
+				PRODUCT_NAME = theorafile;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
@@ -727,6 +897,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -737,24 +908,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../lib;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				"OTHER_CFLAGS[sdk=appletvos*]" = (
-					"-DOC_ARM_ASM",
-					"-DOC_ARM_ASM_EDSP",
-					"-DOC_ARM_ASM_MEDIA",
-					"-DOC_ARM_ASM_NEON",
-				);
-				"OTHER_CFLAGS[sdk=appletvsimulator*]" = "";
-				"OTHER_CFLAGS[sdk=iphoneos*]" = (
-					"-DOC_ARM_ASM",
-					"-DOC_ARM_ASM_EDSP",
-					"-DOC_ARM_ASM_MEDIA",
-					"-DOC_ARM_ASM_NEON",
-				);
-				"OTHER_CFLAGS[sdk=iphonesimulator*]" = "";
-				SDKROOT = iphoneos;
+				PRODUCT_NAME = theorafile;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -764,9 +923,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = ../lib;
+				"OTHER_CFLAGS[sdk=iphoneos*]" = (
+					"-DOC_ARM_ASM",
+					"-DOC_ARM_ASM_EDSP",
+					"-DOC_ARM_ASM_MEDIA",
+					"-DOC_ARM_ASM_NEON",
+				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -776,11 +940,84 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = ../lib;
+				"OTHER_CFLAGS[sdk=iphoneos*]" = (
+					"-DOC_ARM_ASM",
+					"-DOC_ARM_ASM_EDSP",
+					"-DOC_ARM_ASM_MEDIA",
+					"-DOC_ARM_ASM_NEON",
+				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7B5C04292B4331050032DA39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 78E9RL28VG;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=macosx*][arch=arm64]" = (
+					mmxstate.c,
+					mmxidct.c,
+					sse2idct.c,
+					mmxfrag.c,
+					x86state.c,
+					x86cpu.c,
+				);
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=macosx*][arch=x86_64]" = (
+					armfrag.c,
+					armloop.c,
+					armidct.c,
+					armcpu.c,
+					armstate.c,
+				);
+				EXECUTABLE_PREFIX = lib;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				PER_ARCH_CFLAGS_arm64 = "-DOC_ARM_ASM -DOC_ARM_ASM_EDSP -DOC_ARM_ASM_MEDIA -DOC_ARM_ASM_NEON";
+				PER_ARCH_CFLAGS_x86_64 = "-DOC_X86_ASM -DOC_X86_64_ASM";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		7B5C042A2B4331050032DA39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 78E9RL28VG;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=macosx*][arch=arm64]" = (
+					mmxstate.c,
+					mmxidct.c,
+					sse2idct.c,
+					mmxfrag.c,
+					x86state.c,
+					x86cpu.c,
+				);
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=macosx*][arch=x86_64]" = (
+					armfrag.c,
+					armloop.c,
+					armidct.c,
+					armcpu.c,
+					armstate.c,
+				);
+				EXECUTABLE_PREFIX = lib;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				PER_ARCH_CFLAGS_arm64 = "-DOC_ARM_ASM -DOC_ARM_ASM_EDSP -DOC_ARM_ASM_MEDIA -DOC_ARM_ASM_NEON";
+				PER_ARCH_CFLAGS_x86_64 = "-DOC_X86_ASM -DOC_X86_64_ASM";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -788,9 +1025,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = ../lib;
+				"OTHER_CFLAGS[sdk=appletvos*]" = (
+					"-DOC_ARM_ASM",
+					"-DOC_ARM_ASM_EDSP",
+					"-DOC_ARM_ASM_MEDIA",
+					"-DOC_ARM_ASM_NEON",
+				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -801,9 +1042,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = ../lib;
+				"OTHER_CFLAGS[sdk=appletvos*]" = (
+					"-DOC_ARM_ASM",
+					"-DOC_ARM_ASM_EDSP",
+					"-DOC_ARM_ASM_MEDIA",
+					"-DOC_ARM_ASM_NEON",
+				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -822,7 +1067,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7B2FB6B92191169C0087816E /* Build configuration list for PBXNativeTarget "theorafile" */ = {
+		7B2FB6B92191169C0087816E /* Build configuration list for PBXNativeTarget "theorafile-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7B2FB6BA2191169C0087816E /* Debug */,
@@ -831,7 +1076,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7BFBC887219366FA00837E89 /* Build configuration list for PBXNativeTarget "theorafile-tv" */ = {
+		7B5C04282B4331050032DA39 /* Build configuration list for PBXNativeTarget "theorafile-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B5C04292B4331050032DA39 /* Debug */,
+				7B5C042A2B4331050032DA39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7BFBC887219366FA00837E89 /* Build configuration list for PBXNativeTarget "theorafile-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7BFBC885219366FA00837E89 /* Debug */,
