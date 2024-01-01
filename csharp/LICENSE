@@ -1,6 +1,6 @@
 /* Theorafile# - C# Wrapper for Theorafile
  *
- * Copyright (c) 2017-2021 Ethan Lee.
+ * Copyright (c) 2017-2024 Ethan Lee.
  *
  * This software is provided 'as-is', without any express or implied warranty.
  * In no event will the authors be held liable for any damages arising from
