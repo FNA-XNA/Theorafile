@@ -22,8 +22,24 @@ jobs:
       with:
         submodules: true
 
-    - name: Build
-      run: make
+    - name: Build Intel
+      run: |
+        CC="cc -arch x86_64" make
+        mv libtheorafile.dylib libtheorafile_x64.dylib
+
+    - name: Build ARM
+      run: |
+        CC="cc -arch arm64" make
+        mv libtheorafile.dylib libtheorafile_arm64.dylib
+
+    - name: Lipo universal
+      run: lipo -create -output libtheorafile.dylib libtheorafile_x64.dylib libtheorafile_arm64.dylib
+
+    - name: Archive build result
+      uses: actions/upload-artifact@v4
+      with:
+        name: Theorafile-osx
+        path: libtheorafile.dylib
 
   windows-mingw:
     name: Windows (MinGW)
@@ -63,3 +79,31 @@ jobs:
           sudo pkg update
           sudo pkg install -y gmake
           gmake
+
+  ios-tvos:
+    name: iOS/tvOS
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        include:
+          - platform: iOS
+            sdk: iphoneos
+          - platform: iOS
+            sdk: iphonesimulator
+          - platform: tvOS
+            sdk: appletvos
+          - platform: tvOS
+            sdk: appletvsimulator
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - name: Build
+      run: xcodebuild -project Xcode/theorafile.xcodeproj -target theorafile-${{ matrix.platform }} -config Release -sdk ${{ matrix.sdk }}
+
+    - name: Archive build result
+      uses: actions/upload-artifact@v4
+      with:
+        name: Theorafile-${{ matrix.sdk }}
+        path: Xcode/build/Release-${{ matrix.sdk }}/libtheorafile.a
