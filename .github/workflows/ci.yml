@@ -4,15 +4,91 @@ on: [push, pull_request]
 
 jobs:
   linux:
-    name: Linux
+    name: Rocky Linux
     runs-on: ubuntu-latest
+    container:
+      image: rockylinux/rockylinux:8
     steps:
-    - uses: actions/checkout@v3
+    - name: Are we really on Rocky Linux?
+      run: cat /etc/os-release
+
+    - name: Install dependencies
+      run: |
+        dnf update -y
+        dnf install -y chrpath gcc git make
+
+    - uses: actions/checkout@v4
       with:
         submodules: true
 
     - name: Build
-      run: make
+      run: |
+        make
+        strip -S libtheorafile.so
+
+    - name: Archive build result
+      uses: actions/upload-artifact@v4
+      with:
+        name: Theorafile-lib64
+        path: libtheorafile.so
+
+  linux-mingw:
+    name: Rocky Linux (MinGW)
+    runs-on: ubuntu-latest
+    container:
+      image: rockylinux/rockylinux:9
+    steps:
+    - name: Are we really on Rocky Linux?
+      run: cat /etc/os-release
+
+    - name: Install dependencies
+      run: |
+        dnf update -y
+        dnf install -y epel-release
+        crb enable
+        dnf install -y git make mingw32-gcc mingw64-gcc
+
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Build
+      run: |
+        mingw32-make
+        mkdir x86
+        mv libtheorafile.dll x86/
+        mingw64-make
+        mkdir x64
+        mv libtheorafile.dll x64/
+
+    - name: Archive x86 build result
+      uses: actions/upload-artifact@v4
+      with:
+        name: Theorafile-x86
+        path: x86/libtheorafile.dll
+
+    - name: Archive x64 build result
+      uses: actions/upload-artifact@v4
+      with:
+        name: Theorafile-x64
+        path: x64/libtheorafile.dll
+
+  freebsd:
+    runs-on: ubuntu-latest
+    name: FreeBSD
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Build
+      uses: cross-platform-actions/action@v0.24.0
+      with:
+        operating_system: freebsd
+        version: '13.3'
+        run: |
+          sudo pkg update
+          sudo pkg install -y gmake
+          gmake
 
   macos:
     name: macOS
@@ -40,45 +116,6 @@ jobs:
       with:
         name: Theorafile-osx
         path: libtheorafile.dylib
-
-  windows-mingw:
-    name: Windows (MinGW)
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-
-    - name: Set up MSYS2
-      uses: msys2/setup-msys2@v2
-      with:
-        msystem: mingw32
-        install: >-
-          mingw-w64-i686-cc
-          mingw-w64-i686-make
-
-    - name: Build
-      run: mingw32-make
-
-  freebsd:
-    runs-on: ubuntu-latest
-    name: FreeBSD
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Build
-      uses: cross-platform-actions/action@v0.24.0
-      with:
-        operating_system: freebsd
-        version: '13.3'
-        run: |
-          sudo pkg update
-          sudo pkg install -y gmake
-          gmake
 
   ios-tvos:
     name: iOS/tvOS
