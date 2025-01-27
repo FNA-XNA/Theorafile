@@ -25,9 +25,9 @@
  *
  */
 
-#include <SDL.h>
-#include <SDL_main.h>
-#include <SDL_opengl.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
+#include <SDL3/SDL_opengl.h>
 #include "theorafile.h"
 
 /* GL Function typedefs */
@@ -78,14 +78,23 @@ static const GLchar *GLFrag =
 	"	gl_FragColor = vec4(rgb, 1.0);\n"
 	"}\n";
 
-void SDLCALL AudioCallback(void *userdata, Uint8* stream, int len)
-{
-	const int samples = len / 4;
-	int read = tf_readaudio((OggTheora_File*) userdata, (float*) stream, samples);
-	if (read < samples)
-	{
-		SDL_memset(stream + read * 4, '\0', (samples - read) * 4);
-	}
+static void SDLCALL AudioCallback(
+	void *userdata,
+	SDL_AudioStream *stream,
+	int additional_amount,
+	int total_amount
+) {
+	float buffer[additional_amount];
+	int read = tf_readaudio(
+		(OggTheora_File*) userdata,
+		(float*) buffer,
+		SDL_arraysize(buffer)
+	);
+	SDL_PutAudioStreamData(
+		stream,
+		buffer,
+		sizeof(buffer)
+	);
 }
 
 int main(int argc, char **argv)
@@ -93,7 +102,7 @@ int main(int argc, char **argv)
 	/* SDL variables */
 	SDL_Window *window;
 	SDL_GLContext context;
-	SDL_AudioDeviceID audio;
+	SDL_AudioStream *stream;
 	SDL_AudioSpec spec;
 	SDL_Event evt;
 	Uint64 timeStart, timeCurrent;
@@ -171,8 +180,6 @@ int main(int argc, char **argv)
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	window = SDL_CreateWindow(
 		"Theorafile Test",
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
 		width,
 		height,
 		SDL_WINDOW_OPENGL
@@ -195,19 +202,15 @@ int main(int argc, char **argv)
 		tf_audioinfo(&fileIn, &channels, &samplerate);
 		SDL_zero(spec);
 		spec.freq = samplerate;
-		spec.format = AUDIO_F32;
+		spec.format = SDL_AUDIO_F32;
 		spec.channels = channels;
-		spec.samples = 4096;
-		spec.callback = AudioCallback;
-		spec.userdata = &fileIn;
-		audio = SDL_OpenAudioDevice(
-			NULL,
-			0,
+		stream = SDL_OpenAudioDeviceStream(
+			SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK,
 			&spec,
-			NULL,
-			0
+			AudioCallback,
+			&fileIn
 		);
-		SDL_PauseAudioDevice(audio, 0);
+		SDL_ResumeAudioStreamDevice(stream);
 	}
 
 	/* Initial GL state */
@@ -298,37 +301,37 @@ int main(int argc, char **argv)
 	{
 		while (SDL_PollEvent(&evt))
 		{
-			if (evt.type == SDL_QUIT)
+			if (evt.type == SDL_EVENT_QUIT)
 			{
 				run = 0;
 			}
-			else if (evt.type == SDL_KEYDOWN)
+			else if (evt.type == SDL_EVENT_KEY_DOWN)
 			{
-				if (evt.key.keysym.sym == SDLK_SPACE)
+				if (evt.key.key == SDLK_SPACE)
 				{
 					/* Slowdown simulator */
 					SDL_Delay(1000);
 				}
-				else if (	evt.key.keysym.sym >= SDLK_1 &&
-						evt.key.keysym.sym <= SDLK_9	)
+				else if (	evt.key.key >= SDLK_1 &&
+						evt.key.key <= SDLK_9	)
 				{
-					SDL_LockAudioDevice(audio);
+					SDL_LockAudioStream(stream);
 					tf_setaudiotrack(
 						&fileIn,
-						evt.key.keysym.sym - SDLK_1
+						evt.key.key - SDLK_1
 					);
-					SDL_UnlockAudioDevice(audio);
+					SDL_UnlockAudioStream(stream);
 				}
 			}
 		}
 
 		/* Loop this video! */
-		SDL_LockAudioDevice(audio);
+		SDL_LockAudioStream(stream);
 		if (tf_eos(&fileIn))
 		{
 			tf_reset(&fileIn);
 		}
-		SDL_UnlockAudioDevice(audio);
+		SDL_UnlockAudioStream(stream);
 
 		/* Based on when we started, what frame should we be on? */
 		timeCurrent = SDL_GetPerformanceCounter();
@@ -340,9 +343,9 @@ int main(int argc, char **argv)
 		if (thisframe > curframe)
 		{
 			/* Keep reading frames until we're caught up */
-			SDL_LockAudioDevice(audio);
+			SDL_LockAudioStream(stream);
 			newframe = tf_readvideo(&fileIn, frame, thisframe - curframe);
-			SDL_UnlockAudioDevice(audio);
+			SDL_UnlockAudioStream(stream);
 			curframe = thisframe;
 
 			/* Only update the textures if we need to! */
@@ -398,10 +401,10 @@ int main(int argc, char **argv)
 	SDL_free(frame);
 	if (tf_hasaudio(&fileIn))
 	{
-		SDL_CloseAudioDevice(audio);
+		SDL_DestroyAudioStream(stream);
 	}
 	tf_close(&fileIn);
-	SDL_GL_DeleteContext(context);
+	SDL_GL_DestroyContext(context);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	SDL_Log("Test complete.\n");

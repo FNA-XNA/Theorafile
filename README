@@ -20,7 +20,7 @@ Dependencies
 Theorafile depends solely on the C runtime. libogg, libvorbis, and libtheoradec
 are statically linked into Theorafile.
 
-Theorafile's "sdl2test" test program requires SDL2.
+Theorafile's "sdl3test" test program requires SDL3.
 
 Building Theorafile
 -------------------

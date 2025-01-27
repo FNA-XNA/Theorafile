@@ -123,7 +123,7 @@ test: theorafile-test
 $(LIB): $(TFSRC)
 	$(CC) $(CFLAGS) -shared -o $@ $^ $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
 theorafile-test: $(TFSRC)
-	$(CC) $(CFLAGS) -g -o $@ sdl2test/sdl2test.c $(TFSRC) $(INCLUDES) $(DEFINES) `sdl2-config --cflags --libs` -lm
+	$(CC) $(CFLAGS) -g -o $@ sdl3test/sdl3test.c $(TFSRC) $(INCLUDES) $(DEFINES) -lSDL3 -lm
 lib/theora/arm/armfrag.o: lib/theora/arm/armopts-gnu.S
 .INTERMEDIATE: lib/theora/arm/armopts-gnu.S
 .SUFFIXES:
