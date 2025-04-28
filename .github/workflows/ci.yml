@@ -144,3 +144,25 @@ jobs:
       with:
         name: Theorafile-${{ matrix.sdk }}
         path: Xcode/build/Release-${{ matrix.sdk }}/libtheorafile.a
+
+  linux-ppc:
+    name: Debian Linux PPC
+    runs-on: ubuntu-latest
+    container:
+      image: dockcross/linux-ppc:latest
+    steps:
+    - name: Install chrpath
+      run: apt install -y chrpath
+
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Build
+      run: |
+        make
+    - name: Archive build result
+      uses: actions/upload-artifact@v4
+      with:
+        name: Theorafile-libpowerpc
+        path: libtheorafile.so
