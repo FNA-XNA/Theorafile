@@ -155,7 +155,6 @@ int main(int argc, char **argv)
 
 	/* Get the video metadata, allocate first frame */
 	tf_videoinfo(&fileIn, &width, &height, &fps, &fmt);
-	frame = (char*) SDL_malloc(width * height * 2);
 	if (fmt == TH_PF_420)
 	{
 		/* Subsampled in both dimensions */
@@ -174,6 +173,7 @@ int main(int argc, char **argv)
 		uvWidth = width;
 		uvHeight = height;
 	}
+	frame = (char*) SDL_malloc(width * height + uvWidth * uvHeight * 2);
 	while (!tf_readvideo(&fileIn, frame, 1));
 
 	/* Create window (and audio device, if applicable) */
