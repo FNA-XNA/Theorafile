@@ -4,19 +4,11 @@ on: [push, pull_request]
 
 jobs:
   linux:
-    name: Rocky Linux
+    name: Steam Linux Runtime
     runs-on: ubuntu-latest
     container:
-      image: rockylinux/rockylinux:8
+      image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
     steps:
-    - name: Are we really on Rocky Linux?
-      run: cat /etc/os-release
-
-    - name: Install dependencies
-      run: |
-        dnf update -y
-        dnf install -y chrpath gcc git make
-
     - uses: actions/checkout@v4
       with:
         submodules: true
@@ -32,21 +24,37 @@ jobs:
         name: Theorafile-lib64
         path: libtheorafile.so
 
+  linux-aarch64:
+    name: Steam Linux Runtime (AArch64)
+    runs-on: ubuntu-24.04-arm
+    container:
+      image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk/arm64:3.0.20250408.124536
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Build
+      run: |
+        make
+        strip -S libtheorafile.so
+
+    - name: Archive build result
+      uses: actions/upload-artifact@v4
+      with:
+        name: Theorafile-aarch64
+        path: libtheorafile.so
+
   linux-mingw:
-    name: Rocky Linux (MinGW)
+    name: Fedora Linux MinGW
     runs-on: ubuntu-latest
     container:
-      image: rockylinux/rockylinux:9
+      image: fedora
     steps:
-    - name: Are we really on Rocky Linux?
-      run: cat /etc/os-release
-
-    - name: Install dependencies
+    - name: Install toolchain
       run: |
         dnf update -y
-        dnf install -y epel-release
-        crb enable
-        dnf install -y git make mingw32-gcc mingw64-gcc
+        dnf install -y git cmake ninja-build mingw32-gcc mingw64-gcc
 
     - uses: actions/checkout@v4
       with:
