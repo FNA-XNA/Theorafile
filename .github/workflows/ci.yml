@@ -201,5 +201,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Theorafile-wasm
-        path: |
-          libTheorafile.a
+        path: libtheorafile.a
