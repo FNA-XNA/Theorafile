@@ -178,3 +178,28 @@ jobs:
       with:
         name: Theorafile-libpowerpc
         path: libtheorafile.so
+
+  wasm:
+    name: WebAssembly
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - uses: emscripten-core/setup-emsdk@v15
+      with:
+        version: 3.1.56
+
+    - name: Verify Emscripten
+      run: emcc -v
+
+    - name: Build Theorafile
+      run: make CC=emcc
+
+    - name: Archive build result
+      uses: actions/upload-artifact@v4
+      with:
+        name: Theorafile-wasm
+        path: |
+          libTheorafile.a
