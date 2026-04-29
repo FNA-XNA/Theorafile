@@ -171,13 +171,12 @@ public static class Theorafile
 	}
 
 	[DllImport(nativeLibName, EntryPoint = "tf_close", CallingConvention = CallingConvention.Cdecl)]
-	private static extern int INTERNAL_tf_close(IntPtr file);
-	public static int tf_close(ref IntPtr file)
+	private static extern void INTERNAL_tf_close(IntPtr file);
+	public static void tf_close(ref IntPtr file)
 	{
-		int result = INTERNAL_tf_close(file);
+		INTERNAL_tf_close(file);
 		Marshal.FreeHGlobal(file);
 		file = IntPtr.Zero;
-		return result;
 	}
 
 	[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
