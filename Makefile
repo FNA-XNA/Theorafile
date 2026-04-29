@@ -2,9 +2,13 @@
 # Written by Ethan "flibitijibibo" Lee
 
 # Detect cross targets
-TRIPLET=$(shell $(CC) -dumpmachine)
+TRIPLET:=$(shell $(CC) -dumpmachine)
+ifeq ($(TRIPLET),)
+	TRIPLET:=$(CC)
+endif
 WINDOWS_TARGET=0
 APPLE_TARGET=0
+EMSCRIPTEN_TARGET=0
 ifeq ($(OS), Windows_NT) # cygwin/msys2
 	WINDOWS_TARGET=1
 endif
@@ -16,6 +20,12 @@ ifneq (,$(findstring w64-windows,$(TRIPLET)))
 endif
 ifneq (,$(findstring apple-darwin,$(TRIPLET)))
 	APPLE_TARGET=1
+endif
+ifneq (,$(findstring emscripten,$(TRIPLET)))
+	EMSCRIPTEN_TARGET=1
+endif
+ifneq (,$(findstring wasm32,$(TRIPLET)))
+	EMSCRIPTEN_TARGET=1
 endif
 ifneq (,$(findstring x86_64,$(TRIPLET)))
 	DEFINES += -DOC_X86_ASM -DOC_X86_64_ASM
@@ -36,7 +46,10 @@ ifneq (,$(findstring aarch64,$(TRIPLET)))
 endif
 
 # Compiler
-ifeq ($(WINDOWS_TARGET),1)
+ifeq ($(EMSCRIPTEN_TARGET),1)
+	TARGET = a
+	AR = emar
+else ifeq ($(WINDOWS_TARGET),1)
 	TARGET = dll
 	LDFLAGS += -static-libgcc
 else ifeq ($(APPLE_TARGET),1)
@@ -116,10 +129,19 @@ TFSRC_ARCH_ARM = \
 # Targets
 .PHONY: lib all clean test
 lib: $(LIB)
+ifeq ($(EMSCRIPTEN_TARGET),1)
+all: $(LIB)
+else
 all: $(LIB) theorafile-test
+endif
 clean:
-	rm -f $(LIB) theorafile-test
+	rm -f $(LIB) theorafile-test $(TFOBJ)
+ifeq ($(EMSCRIPTEN_TARGET),1)
+test:
+	@echo "theorafile-test is not supported when targeting emscripten"
+else
 test: theorafile-test
+endif
 $(LIB): $(TFSRC)
 	$(CC) $(CFLAGS) -shared -o $@ $^ $(INCLUDES) $(DEFINES) -lm $(LDFLAGS)
 theorafile-test: $(TFSRC)
